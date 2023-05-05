@@ -1,0 +1,162 @@
+{
+  "menu": [
+    {
+      "name": "Dashboards",
+      "badge": "",
+      "badgeClass": "badge badge-light-warning rounded-pill ms-auto me-1",
+      "icon": "home",
+      "slug": ""
+    },
+    {
+      "navheader": "Apps & Pages",
+      "slug": ""
+    },
+    {
+        "name": "users mangement",
+        "icon": "user-check",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/users",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "mentor/create",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
+      {
+        "name": "admins mangement",
+        "icon": "user-check",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/admins",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "mentor/create",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
+      {
+        "name": "category",
+        "icon": "users",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/category",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "Admin/page/category/create",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
+      {
+        "name": "page-category",
+        "icon": "tag",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/page/category",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "Admin/page/category/create",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
+      {
+        "name": "Pages",
+        "icon": "settings",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "product",
+            "name": "Countact us",
+            "icon": "circle",
+            "slug": "app-mentor-Countact-us"
+          },
+          {
+            "url": "privacy/index",
+            "name": "Privacy",
+            "icon": "circle",
+            "slug": "app-mentor-privacy"
+          },
+          {
+            "url": "term/index",
+            "name": "Terms",
+            "icon": "circle",
+            "slug": "app-mentor-terms"
+          },
+          {
+            "url": "question/index",
+            "name": "Question",
+            "icon": "circle",
+            "slug": "app-mentor-question"
+          }
+        ]
+      },
+
+    {
+      "url": "app/calendar",
+      "name": "Calendar",
+      "icon": "calendar",
+      "slug": "app-calendar"
+    },
+
+    {
+      "navheader": "Charts & Maps",
+      "slug": ""
+    },
+    {
+      "name": "Charts",
+      "icon": "pie-chart",
+      "badge": "2",
+      "slug": "",
+      "badgeClass": "badge rounded-pill badge-light-danger ms-auto me-1",
+      "submenu": [
+        {
+          "url": "chart/apex",
+          "name": "Apex",
+          "icon": "circle",
+          "slug": "chart-apex"
+        },
+        {
+          "url": "chart/chartjs",
+          "name": "Chartjs",
+          "icon": "circle",
+          "slug": "chart-chartjs"
+        }
+      ]
+    },
+    {
+      "url": "maps/leaflet",
+      "name": "Leaflet Maps",
+      "icon": "map",
+      "slug": "map-leaflet"
+    }
+
+  ]
+}
