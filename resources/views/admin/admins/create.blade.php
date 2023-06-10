@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 
-@section('title', 'Create New User')
+@section('title', 'Create New admin')
 
 @section('vendor-style')
     <!-- vendor css files -->
@@ -25,25 +25,25 @@
     <section class="modern-horizontal-wizard">
         <div class=" wizard-modern modern-wizard-example">
             <div class="bs-stepper-header">
-                <form class="form" method="post" action="{{ ROUTE('users.store') }}" enctype="multipart/form-data"
+                <form class="form" method="post" action="{{ ROUTE('admins.store') }}" enctype="multipart/form-data"
                     style="    width: 100%;
 
     padding: 3rem 2rem; border-radius: 10px;">
                     @csrf
-                    
+
                         <div id="account-details-modern" class="content" role="tabpanel"
                             aria-labelledby="account-details-modern-trigger" style="margin-left: 0 !important;">
                             <div class="content-header">
-                                <h5 class="mb-0">User Details</h5>
-                                <small class="text-muted">Enter Your User Info.</small>
+                                <h5 class="mb-0">admin Details</h5>
+                                <small class="text-muted">Enter Your admin Info.</small>
                             </div>
                             <br>
                             <div class="row">
                                 <div class="mb-1 col-md-6">
-                                    <label class="form-label" for="user_name">User name</label>
-                                    <input type="text" name="user_name" id="user_name" class="form-control @error('user_name') is-invalid @enderror"
-                                     value="{{old('user_name')}}" required />
-                                    @error('user_name')
+                                    <label class="form-label" for="user_name">name</label>
+                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
+                                     value="{{old('name')}}" required />
+                                    @error('name')
                                     <span class="invalid-feedback" role="alert">
                                       <strong>{{ $message }}</strong>
                                     </span>
@@ -85,38 +85,26 @@
                             </div>
                             <div class="row">
                                 <div class="mb-1 col-md-6">
-                                    <label class="form-label" for="address">Address</label>
-                                    <input type="text" name="address" id="address" class="form-control @error('address') is-invalid @enderror "
-                                    value="{{old('address')}}"   required />
-                                         @error('address')
-                                         <span class="invalid-feedback" role="alert">
-                                           <strong>{{ $message }}</strong>
-                                         </span>
-                                       @enderror
+                                    <label class="form-label" for="gender">Type</label>
+                                    <select class="form-control w-100 @error('type') is-invalid @enderror" name="type" >
+                                        <option value='superAdmin'>super Admin</option>
+                                        <option value='admin'>Admin</option>
+                                    </select>
+
                                 </div>
                                 <div class="mb-1 col-md-6">
-                                    <label class="form-label" for="gender">Gender</label>
-                                    <select class="form-control w-100 @error('gender') is-invalid @enderror" name="gender" >
+                                    <label class="form-label" for="gender">Role</label>
+                                    <select class="form-control w-100 @error('role_id') is-invalid @enderror" name="role" >
                                         <!-- <option label=" "></option> -->
-                                        <option value='male'>Male</option>
-                                        <option value='female'>Female</option>
+                                        @isset($roles)
+                                            @foreach ($roles as $role)
+                                            <option value={{$role->id}}>{{$role->name}}</option>
+                                            @endforeach
+                                        @endisset
                                     </select>
 
                                 </div>
                             </div>
-                            {{-- <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-1 row">
-                                        <div class="col-sm-1">
-                                            <label class="col-form-label" for="icon">Icon</label>
-                                        </div>
-                                        <div class="col-sm-11">
-                                            <input class="form-control" name="icon" type="file" required
-                                                id="formFile" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">

@@ -52,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
 
             Route::prefix('Admin')
-                ->middleware('web' )
+                ->middleware('web','auth:admin' )
                 ->namespace($this->adminNamespace)
                 ->group(base_path('routes/admin.php'));
         });

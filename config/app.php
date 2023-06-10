@@ -138,7 +138,7 @@ return [
     */
 
     'providers' => [
-        // CoreProvider::class,
+        CoreProvider::class,
         /*
          * Laravel Framework Service Providers...
          */

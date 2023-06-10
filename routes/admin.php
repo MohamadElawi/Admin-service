@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +24,27 @@ Route::resource('users', UserController::class);
 
 
 Route::get('admins/getData',[AdminController::class,'getData']);
+Route::get('admins/change-status/{admin}',[AdminController::class,'changeStatus']);
 Route::resource('admins',AdminController::class);
 
 
 Route::get('profile', [ProfileController::class, 'profileShow'])->name('profile.show');
 Route::post('profile-edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
 Route::post('profile-edit-pass', [ProfileController::class, 'editPassword'])->name('profile.edit.pass');
+
+
+
+Route::get('roles/getData',[RoleController::class,'getData']);
+Route::get('roles/change-status/{role}',[RoleController::class,'changeStatus']);
+Route::resource('roles',RoleController::class);
+
+
+
+Route::get('category/getData',[CategoryController::class ,'getData']);
+Route::get('category/change-status/{category}',[CategoryController::class,'changeStatus']);
+Route::resource('category',CategoryController::class);
+
+
+Route::get('product/getData',[ProductController::class ,'getData']);
+Route::get('product/change-status/{category}',[ProductController::class,'changeStatus']);
+Route::resource('product',ProductController::class);

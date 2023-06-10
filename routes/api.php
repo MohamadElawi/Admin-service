@@ -3,6 +3,8 @@
 use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\Auth\RegisterController;
 use App\Http\Controllers\User\ProfileController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +30,19 @@ Route::group(['prefix'=>'user'],function(){
         Route::post('edit-user-name',[ProfileController::class,'editUserName']);
         Route::post('change-password',[ProfileController::class,'changePassword']);
     });
+});
+
+
+Route::post('test',function(Request $request){
+
+    $response = Http::attach(
+        'image', file_get_contents($request->image), $request->image->getClientOriginalName()
+    )->post('localhost:8080/api/category',$request->only('name_en','description_en'));
+    return $response->status() ;
+});
+
+
+Route::post('test-show',function(Request $request){
+    $response = Http::get('localhost:8080/api/category/8');
+    return $response->json() ;
 });

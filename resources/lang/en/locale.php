@@ -206,4 +206,6 @@ return [
     "users mangement" => 'users mangement',
     "category" => 'category',
     "page-category" => 'page-category',
+    "admins mangement" => 'Admin mangement',
+
 ];

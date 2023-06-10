@@ -23,12 +23,13 @@
             "slug": "app-mentor-list"
           },
           {
-            "url": "mentor/create",
+            "url": "Admin/users/create",
             "name": "Add",
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],
+        "permission":"view users"
       },
       {
         "name": "admins mangement",
@@ -42,7 +43,7 @@
             "slug": "app-mentor-list"
           },
           {
-            "url": "mentor/create",
+            "url": "Admin/admins/create",
             "name": "Add",
             "icon": "circle",
             "slug": "app-mentor-add"
@@ -50,7 +51,26 @@
         ]
       },
       {
-        "name": "category",
+        "name": "Role Mangement",
+        "icon": "user-check",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/roles",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "Admin/admins/create",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
+      {
+        "name": "category Management",
         "icon": "users",
         "slug": "",
         "submenu": [
@@ -61,7 +81,7 @@
             "slug": "app-mentor-list"
           },
           {
-            "url": "Admin/page/category/create",
+            "url": "Admin/category/create",
             "name": "Add",
             "icon": "circle",
             "slug": "app-mentor-add"

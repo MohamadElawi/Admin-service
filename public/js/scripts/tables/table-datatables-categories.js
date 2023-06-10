@@ -1,17 +1,18 @@
 $(function () {
+
     function datatable() {
-        var table = $("#specializations").DataTable({
-            responsive: true,
+        var table = $("#categories").DataTable({
+            responsive: false,
             processing: false,
             serverSide: false,
             ajax: {
                 type: "get",
-                url: "getData",
+                url: "category/getData",
             },
             columns: [
                 {
                     data: function (data) {
-                        return data.id;
+                        return data.DT_RowIndex;
                     },
                     name: "#",
                 },
@@ -19,39 +20,37 @@ $(function () {
                     data: function (data) {
                         return data.name;
                     },
-                    name: "Name",
+                    name: "name",
+                },
+                {
+                        data: function (data) {
+                            return (
+                                "<img src='" +
+                                data.image +
+                                "' width='50px' style='border-radius: 50%;'/>"
+                            );
+                        },
+                        name: "image",
+                    },
+                {
+                    data: function (data) {
+                        if (data.status == 'notActive')
+                            return "<small class='badge rounded-pill  badge-light-danger'>" + data.status + "<small>";
+                        else
+                            return "<small class='badge rounded-pill  badge-light-success'>" + data.status + "</small>";
+                    },
+                    name: "status",
                 },
                 {
                     data: function (data) {
-                        return data.price;
+                        return data.created_at;
                     },
-                    name: "Price",
+                    name: "Created At",
                 },
 
                 {
                     data: function (data) {
-                        return (
-                            '<a onclick="showItem(' + data.id + ')"  data-toggle="modal" data-target="#category-show" style="color:#f5cb42;">' +
-                            feather.icons["alert-circle"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="editItem(' +
-                            data.id +
-                            ')" class="item-edit" data-toggle="modal" data-target="#category-edit" style="color:#7367f0;"> ' +
-                            feather.icons["edit"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="deleteItem(' +
-                            data.id +
-                            ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
-                            feather.icons["trash-2"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                        );
+                        return data.action;
                     },
                     name: "action",
                 },
@@ -64,148 +63,148 @@ $(function () {
 
 
 function deleteItem(id) {
-    $("#delete-btn").click(function () {
-        $.ajax({
-            type: "delete",
-            url: "category/" + id,
-            headers: {
-                "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
-            },
-            success: function () {
-                $("#specializations").DataTable().ajax.reload();
-                $("#delete-msg").show();
-                setTimeout(() => {
-                    $(".alert-success").hide();
-                }, 3000);
-                $("#close").click();
-            },
-            error: function () {
-                $("#error-msg").show();
-                setTimeout(() => {
-                    $(".alert-danger").hide();
-                }, 3000);
-            },
-        });
-    });
+    console.log(id)
+    $("#item-id").val(id);
+   console.log($('#item-id').val())
 }
+
+$("#delete-btn").click(function () {
+    var id =$('#item-id').val();
+    console.log(id)
+    $.ajax({
+        type: "delete",
+        url: "category/" + id,
+        headers: {
+            "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
+        },
+        success: function (data) {
+            $("#categories").DataTable().ajax.reload();
+            $('#success-msg').html(data.message);
+            $('#success-msg').show();
+            setTimeout(() => {
+                $(".alert-success").hide();
+            }, 3000);
+        },
+        error: function (data) {
+            $('#error-msg').html(data.message);
+            $("#error-msg").show();
+            setTimeout(() => {
+                $(".alert-danger").hide();
+            }, 3000);
+        },
+    });
+});
+
+    $('#edit-modal').on('hidden.bs.modal', function() {
+      // Clear data when the modal is closed
+      $(this).find('.modal-body').empty();
+    });
+
+    $("#close").click(function(){
+        console.log('dd')
+        $("#image").removeAttr('src');
+        })
+// change status
+
+function changeStatus(id) {
+    $("#item-id").val(id);
+}
+
+$("#change-btn").click(function () {
+    var id = $("#item-id").val();
+    $.ajax({
+        type: "get",
+        url: "category/change-status/" + id,
+        headers: {
+            "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
+        },
+        success: function (data) {
+            $('#categories').DataTable().ajax.reload()
+            $('#success-msg').html(data.message);
+            $('#success-msg').show();
+            setTimeout(() => {
+                $('.alert').hide()
+            }, 3000);
+        },
+        error: function () {
+
+        }
+    });
+})
+
+
 
 
 // edit category
 
 function editItem(id) {
-    $.get("show/" + id, function (category) {
+    $.get("category/" + id, function (category) {
         $("#id").val(category.id);
         $("#name").val(category.name);
-        $("#price").val(category.price);
         $("#description").val(category.description);
-    });
-
-    $("#sub-edit").click(function () {
-        // e.preventDefault();
-        var form = new FormData($("#form-edit")[0]);
-        $('#editnameError').addClass('d-none');
-        $('#editpriceError').addClass('d-none');
-        $('#editdescriptionError').addClass('d-none');
-        $.ajax({
-            type: "post",
-            headers: {
-                "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
-                "accept" : "application/json"
-            },
-            url: "category/update/"+id,
-            data: form,
-            dataType: "text",
-            processData: false, // tell jQuery not to process the data
-            contentType: false,
-            success: function (data) {
-                $("#specializations").DataTable().ajax.reload();
-                $("#close-modal-edit").click();
-                $("#update-msg").show();
-                setTimeout(() => {
-                    $(".alert-success").hide();
-                }, 3000);
-            },
-            error: function (data) {
-                console.log(data)
-                var errors = JSON.parse(data.responseText);
-                    console.log(errors)
-                    if($.isEmptyObject(errors) == false) {
-
-                        $.each(errors.errors,function (key, value) {
-                            console.log(key)
-                            console.log(value)
-                            var ErrorID = '#edit'+ key +'Error';
-
-                            $(ErrorID).removeClass("d-none");
-                            $(ErrorID).text(value)
-                        })
-
-                    }
-            },
-        });
+        $("#image").attr('src',category.image);
     });
 }
 
 
-
-// create category
-$(document).on("click", "#submit", function (e) {
-    e.preventDefault();
-    $("#addnameError").addClass('d-none');
-    $("#addpriceError").addClass('d-none');
-    $("#adddescriptionError").addClass('d-none');
-    var form = new FormData($("#form")[0]);
-    var headers = {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    };
+$("#sub-edit").click(function () {
+    // e.preventDefault();
+    var form = new FormData($("#form-edit")[0]);
+    var id =$("#id").val();
+    console.log(id);
+    $('#editnameError').addClass('d-none');
+    $('#editpriceError').addClass('d-none');
+    $('#editdescriptionError').addClass('d-none');
     $.ajax({
         type: "post",
-        headers: headers,
-        url: "category/store",
+        headers: {
+            "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
+            "accept" : "application/json"
+        },
+        url: "category/"+id,
         data: form,
-        processData: false,
+        dataType: "text",
+        processData: false, // tell jQuery not to process the data
         contentType: false,
-        cache: false,
         success: function (data) {
-            $("#specializations").DataTable().ajax.reload();
-            $("#close-modal").click();
-            $("#create-msg").show();
+            $("#categories").DataTable().ajax.reload();
+            $("#close").click();
+            $("#success-msg").html(data.message);
+            $("#success-msg").show();
             setTimeout(() => {
                 $(".alert-success").hide();
             }, 3000);
         },
         error: function (data) {
             console.log(data)
-            var errors = data.responseJSON;
-            if ($.isEmptyObject(errors) == false) {
-                if (data.status == 422) {
-                    $.each(errors.errors, function (key, value) {
-                        var ErrorID = '#add' + key + 'Error';
+            var errors = JSON.parse(data.responseText);
+                console.log(errors)
+                if($.isEmptyObject(errors) == false) {
+
+                    $.each(errors.errors,function (key, value) {
+                        console.log(key)
+                        console.log(value)
+                        var ErrorID = '#edit'+ key +'Error';
+
                         $(ErrorID).removeClass("d-none");
                         $(ErrorID).text(value)
                     })
+
                 }
-                else {
-                    $("#error-msg").show()
-                    $('#close-modal').click()
-                    setTimeout(() => {
-                        $('.alert-danger').hide()
-                    }, 3000)
-                }
-            }
-
-
-
         },
     });
 });
 
 
+
+
+
 function showItem(id) {
-    $.get("show/" + id, function (category) {
-        console.log(category)
+    $.get("category/" + id, function (category) {
         $("#show-name").html(category.name);
-        $("#show-price").html(category.price);
         $("#show-description").html(category.description);
+        $("#show-image").attr('src',category.image);
+        $("#show-status").html(category.status);
+        $("#show-created-at").html(category.created_at);
     });
 }

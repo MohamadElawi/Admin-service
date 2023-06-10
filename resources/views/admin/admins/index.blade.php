@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 
-@section('title', 'users')
+@section('title', 'admins')
 
 @section('vendor-style')
     {{-- vendor css files --}}
@@ -12,7 +12,9 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
     <style>
-        #users_wrapper { margin :10px;}
+        #admins_wrapper {
+            margin: 10px;
+        }
     </style>
     {{-- <link rel="stylesheet" href="{{ asset(mix('css/core.css')) }}" media="all" /> --}}
 @endsection
@@ -22,23 +24,26 @@
         <div class="col-10">
         </div>
         <div class="col-2">
-            <a class="btn btn-primary" href="{{ route('users.create') }}">
-                Add new record
-            </a>
 
+                <a class="btn btn-primary" href="{{ route('admins.create') }}">
+                    Add new record
+
+                </a>
+            
         </div>
+    </div>
     @include('includes.alerts.success')
     @include('includes.alerts.errors')
     <div class="alert alert-success col-5 text-center py-1 mx-auto" id="success-msg" style="display: none"></div>
     <div class="alert alert-danger col-5 text-center py-1 mx-auto" id="error_msg" style="display: none"></div>
 
     <!-- edit-Modal -->
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">edit user</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">edit admin</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -67,25 +72,31 @@
                                 placeholder="Enter phone">
                             <span class="text-danger" id="editphoneError"></span>
                         </div>
-                        {{-- <div class="form-group">
-                            <label for="email">Address</label>
-                            <input type="email" name="address" class="form-control" id="address"
-                                placeholder="enter address" style="text-align: left">
-                            <span class="text-danger" id="editaddressError"></span>
-                        </div> --}}
                         <div class="form-group">
                             <label for="">type</label>
-                            <select class="form-control w-100 @error('type') is-invalid @enderror" name="type">
+                            <select class="form-control w-100 @error('type') is-invalid @enderror" name="type"
+                                id="type">
                                 <!-- <option label=" "></option> -->
                                 <option value='admin'>admin</option>
                                 <option value='superAdmin'>superAdmin</option>
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label for="">role</label>
+                            <select class="form-control w-100 @error('role') is-invalid @enderror" name="role"
+                                id="role_name">
+                                <!-- <option label=" "></option> -->
+                                @isset($roles)
+                                    @foreach ($roles as $role)
+                                        <option value={{ $role->id }}>{{ $role->name }}</option>
+                                    @endforeach
+                                @endisset
+                            </select>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" id='close-btn'>Close</button>
-                    <button type="button" class="btn btn-primary" id="sub-edit" >Save changes</button>
+                    <button type="button" class="btn btn-primary" id="sub-edit">Save changes</button>
                 </div>
                 </form>
             </div>
@@ -120,6 +131,10 @@
                         <tr height="50px">
                             <td><strong>type:</strong></td>
                             <td id="show-type"></td>
+                        </tr>
+                        <tr height="50px">
+                            <td><strong>Role :</strong></td>
+                            <td id="show-role"></td>
                         </tr>
                         <tr height="50px">
                             <td><strong>status: </strong></td>
@@ -166,6 +181,32 @@
         </div>
 
 
+        {{-- change status comfirm --}}
+        <div class="modal fade" id="change-status-modal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to change status?
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="admin-id" value="">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="close">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"
+                            id="change-btn">change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         {{-- delete comfirm --}}
         <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -190,41 +231,6 @@
                 </div>
             </div>
         </div>
-
-         {{-- restore comfirm --}}
-         <div class="modal fade" id="restore-modal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-                 <div class="modal-body">
-                     Are you sure you want to restore ?
-                 </div>
-                 <div class="modal-footer">
-                     <input type="hidden" name="user-id" id="user-id" value="">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                         id="close">Close</button>
-                     <button type="button" class="btn btn-primary" data-dismiss="modal"
-                         id="restore-btn">restore</button>
-                 </div>
-             </div>
-         </div>
-     </div>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-        </script>
     </section>
     <!--/ Basic table -->
 @endsection

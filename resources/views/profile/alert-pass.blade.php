@@ -1,6 +1,6 @@
 @if (Session::has('success-pass'))
 <button type="text" class="alert alert-primary col-5 text-center py-1 mx-auto"
-    id="type-error">{{ Session::get('success-pass') }}
+    id="type-success">{{ Session::get('success-pass') }}
 </button>
 @endif
 

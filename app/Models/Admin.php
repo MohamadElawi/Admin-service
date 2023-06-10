@@ -15,10 +15,10 @@ class Admin extends Authenticatable implements JWTSubject
         'name','email','phone','password','status','type'
     ];
 
-    protected $appends =['roles'];
+    protected $appends =['all_roles','all_permissions'];
 
     protected $hidden = [
-        'password',
+        'password','roles','permissions'
     ];
 
     protected $casts = [
@@ -26,8 +26,12 @@ class Admin extends Authenticatable implements JWTSubject
         'updated_at' => 'datetime:Y-m-d H:00',
     ];
 
-    public function getRolesAttribute($value){
-        return 'hh';
+    public function getAllRolesAttribute($value){
+        return $this->getRoleNames();
+    }
+
+    public function getAllPermissionsAttribute($value){
+        return $this->getAllPermissions()->pluck('name');
     }
 
      ###################### jwt method

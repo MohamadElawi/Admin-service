@@ -1,84 +1,96 @@
-<body class="vertical-layout vertical-menu-modern {{ $configData['verticalMenuNavbarType'] }} {{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }} {{ $configData['sidebarClass']}} {{ $configData['footerType'] }} {{$configData['contentLayout']}}"
-data-open="click"
-data-menu="vertical-menu-modern"
-data-col="{{$configData['showMenu'] ? $configData['contentLayout'] : '1-column' }}"
-data-framework="laravel"
-data-asset-path="{{ asset('/')}}">
-  <!-- BEGIN: Header-->
-  @include('panels.navbar')
-  <!-- END: Header-->
-
-  <!-- BEGIN: Main Menu-->
-  @if((isset($configData['showMenu']) && $configData['showMenu'] === true))
-  @include('panels.sidebar')
-  @endif
-  <!-- END: Main Menu-->
-
-  <!-- BEGIN: Content-->
-  <div class="app-content content {{ $configData['pageClass'] }}">
+<body
+    class="vertical-layout vertical-menu-modern {{ $configData['verticalMenuNavbarType'] }} {{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }} {{ $configData['sidebarClass'] }} {{ $configData['footerType'] }} {{ $configData['contentLayout'] }}"
+    data-open="click" data-menu="vertical-menu-modern"
+    data-col="{{ $configData['showMenu'] ? $configData['contentLayout'] : '1-column' }}" data-framework="laravel"
+    data-asset-path="{{ asset('/') }}">
     <!-- BEGIN: Header-->
-    <div class="content-overlay"></div>
-    <div class="header-navbar-shadow"></div>
+    @include('panels.navbar')
+    <!-- END: Header-->
 
-    @if(($configData['contentLayout']!=='default') && isset($configData['contentLayout']))
-    <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
-      <div class="{{ $configData['sidebarPositionClass'] }}">
-        <div class="sidebar">
-          {{-- Include Sidebar Content --}}
-          @yield('content-sidebar')
-        </div>
-      </div>
-      <div class="{{ $configData['contentsidebarClass'] }}">
-        <div class="content-wrapper">
-          <div class="content-body">
-            {{-- Include Page Content --}}
-            @yield('content')
-          </div>
-        </div>
-      </div>
-    </div>
-    @else
-    <div class="content-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
-      {{-- Include Breadcrumb --}}
-      @if($configData['pageHeader'] === true && isset($configData['pageHeader']))
-      @include('panels.breadcrumb')
-      @endif
+    <!-- BEGIN: Main Menu-->
+    @if (isset($configData['showMenu']) && $configData['showMenu'] === true)
+        @include('panels.sidebar')
+    @endif
+    <!-- END: Main Menu-->
 
-      <div class="content-body">
-        {{-- Include Page Content --}}
-        @yield('content')
-      </div>
+    <!-- BEGIN: Content-->
+    <div class="app-content content {{ $configData['pageClass'] }}">
+        <!-- BEGIN: Header-->
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+
+        @if ($configData['contentLayout'] !== 'default' && isset($configData['contentLayout']))
+            <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
+                <div class="{{ $configData['sidebarPositionClass'] }}">
+                    <div class="sidebar">
+                        {{-- Include Sidebar Content --}}
+                        @yield('content-sidebar')
+                    </div>
+                </div>
+                <div class="{{ $configData['contentsidebarClass'] }}">
+                    <div class="content-wrapper">
+                        <div class="content-body">
+                            {{-- Include Page Content --}}
+
+                            @yield('content')
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="content-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
+                {{-- Include Breadcrumb --}}
+                @if ($configData['pageHeader'] === true && isset($configData['pageHeader']))
+                    @include('panels.breadcrumb')
+                @endif
+
+                <div class="content-body">
+                    {{-- Include Page Content --}}
+                    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+                    </script>
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+                        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+                    </script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+                    </script>
+                    @yield('content')
+                </div>
+            </div>
+        @endif
+
     </div>
+    <!-- End: Content-->
+
+    @if ($configData['blankPage'] == false && isset($configData['blankPage']))
+        <!-- BEGIN: Customizer-->
+        @include('content/pages/customizer')
+        <!-- End: Customizer-->
+        <!-- Buynow Button-->
+        {{-- @include('content/pages/buy-now') --}}
     @endif
 
-  </div>
-  <!-- End: Content-->
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
 
-  @if($configData['blankPage'] == false && isset($configData['blankPage']))
-  <!-- BEGIN: Customizer-->
-  @include('content/pages/customizer')
-  <!-- End: Customizer-->
-  <!-- Buynow Button-->
-  {{-- @include('content/pages/buy-now') --}}
-  @endif
+    {{-- include footer --}}
+    @include('panels/footer')
 
-  <div class="sidenav-overlay"></div>
-  <div class="drag-target"></div>
+    {{-- include default scripts --}}
+    @include('panels/scripts')
 
-  {{-- include footer --}}
-  @include('panels/footer')
-
-  {{-- include default scripts --}}
-  @include('panels/scripts')
-
-  <script type="text/javascript">
-    $(window).on('load', function() {
-      if (feather) {
-        feather.replace({
-          width: 14, height: 14
-        });
-      }
-    })
-  </script>
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+    </script>
 </body>
+
 </html>

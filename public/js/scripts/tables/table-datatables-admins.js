@@ -1,4 +1,11 @@
 $(function () {
+    $(document).ready(function(){
+        setTimeout(() => {
+            $(".alert").hide();
+        }, 3000);
+   })
+
+
     function datatable() {
         var table = $("#admins").DataTable({
             responsive: true,
@@ -58,7 +65,7 @@ $(function () {
                 },
                 {
                     data: function (data) {
-                        if ( data.status == 'deleted')
+                        if ( data.status == 'notActive')
                             return "<small class='badge rounded-pill  badge-light-danger'>" + data.status + "<small>";
                         else
                             return "<small class='badge rounded-pill  badge-light-success'>" + data.status + "</small>";
@@ -74,19 +81,18 @@ $(function () {
 
                 {
                     data: function (data) {
-                        if(data.status != 'deleted')
                         return (
                             '<a onclick=show(' + data.id + ')  data-toggle="modal" data-target="#show" style="color:#f5cb42;">' +
                             feather.icons["alert-circle"].toSvg({
                                 class: "font-large-1 me-2",
                             }) +
                             "</a>" +
-                            '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#user-edit" style="color:#7367f0">' +
+                            '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#edit-modal" style="color:#7367f0">' +
                             feather.icons["edit"].toSvg({
                                 class: "font-large-1 me-2",
                             }) +
                             "</a>" +
-                            '<a onclick="blockedItem(' + data.id +')" class="delete-record" data-toggle="modal" data-target="#block-modal" style="color: #6780E5;">' +
+                            '<a onclick="changeStatus(' + data.id +')"  data-toggle="modal" data-target="#change-status-modal" style="color: #6780E5;">' +
                             feather.icons["lock"].toSvg({
                                 class: "font-large-1 me-2",
                             }) +
@@ -98,16 +104,6 @@ $(function () {
                             "</a>"
                             + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
                         );
-                        else
-                            return (
-                                '<a onclick="restoreItem(' + data.id + ')"  data-toggle="modal" data-target="#restore-modal" style="color: #2C9151;">' +
-                            feather.icons["rotate-cw"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>"
-                            + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                            );
-
                     },
                     name: "action",
                 },
@@ -118,53 +114,17 @@ $(function () {
     datatable();
 });
 
-
-$(document).on("click", "#submit", function (e) {
-    e.preventDefault();
-    var form = new FormData($("#form")[0]);
-    $('#addnameError').addClass('d-none');
-    $('#addemailError').addClass('d-none');
-    $('#addpasswordError').addClass('d-none');
-    $.ajax({
-        type: "post",
-        headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"), },
-        url: "users/store",
-        data: form,
-        processData: false,
-        contentType: false,
-        cache: false,
-        success: function (data) {
-            $("#users").DataTable().ajax.reload();
-            $("#success-msg").html(data.message)
-            $("#success-msg").show();
-            setTimeout(() => {
-                $("#success-msg").hide();
-            }, 3000);
-        },
-        error: function (data) {
-            // console.log(data)
-            var errors = data.responseJSON;
-            if ($.isEmptyObject(errors) == false) {
-                $.each(errors.errors, function (key, value) {
-                    var ErrorID = '#add' + key + 'Error';
-
-                    $(ErrorID).removeClass("d-none");
-                    $(ErrorID).text(value)
-                })
-            }
-        },
-    });
-});
-
-
 function editItem(id) {
-    $.get("users/" + id, function (data) {
-        $("#id").val(data.user.id);
-        $("#name").val(data.user.user_name);
-        $("#email").val(data.user.email);
-        $("#phone").val(data.user.phone);
-        $("#address").val(data.user.address);
-        $("#gender").val(data.user.address); gender
+    $.get("admins/" + id, function (data) {
+        console.log(data.admin.all_roles[0])
+        console.log(data);
+        $("#id").val(data.admin.id);
+        $("#name").val(data.admin.name);
+        $("#email").val(data.admin.email);
+        $("#phone").val(data.admin.phone);
+        $("#type").val(data.admin.type);
+        $('#role_name').val(String(data.admin.roles[0].id));
+
     });
 
 }
@@ -175,7 +135,6 @@ $("#sub-edit").click(function () {
     $('#editnameError').addClass('d-none');
     $('#editemailError').addClass('d-none');
     $('#editphoneError').addClass('d-none');
-    $('#editaddressError').addClass('d-none');
 
     $.ajax({
         type: "POST",
@@ -184,14 +143,13 @@ $("#sub-edit").click(function () {
             "accept": "application/json",
 
         },
-        url: "users/" + id,
+        url: "admins/" + id,
         data: form,
         dataType: "text",
         processData: false, // tell jQuery not to process the data
         contentType: false,
         success: function (data) {
-            console.log(data)
-            $("#users").DataTable().ajax.reload();
+            $("#admins").DataTable().ajax.reload();
             $("#success-msg").html(data);
             $("#success-msg").show();
             setTimeout(() => {
@@ -199,9 +157,8 @@ $("#sub-edit").click(function () {
             }, 3000);
             $('#close-btn').click();
         },
-        error: function (data) {
+        error: function (data) {;
             var errors = JSON.parse(data.responseText);
-            console.log(errors.message.error)
             if ($.isEmptyObject(errors) == false) {
 
                 $.each(errors.errors, function (key, value) {
@@ -242,21 +199,35 @@ $("#delete-btn").click(function () {
     });
 })
 
-
-function restoreItem(id) {
-    $("#user-id").val(id);
+function show(id) {
+    $.get("admins/" + id, function (data) {
+        console.log(data)
+        $("#show-name").html(data.admin.name);
+        $("#show-email").html(data.admin.email);
+        $("#show-phone").html(data.admin.phone);
+        $("#show-type").html(data.admin.type);
+        $("#show-role").html(data.admin.all_roles);
+        $("#show-status").html(data.admin.status);
+        $("#show-created-at").html(data.admin.created_at);
+    });
 }
 
-$("#restore-btn").click(function () {
-    var id = $("#user-id").val();
+
+
+function changeStatus(id) {
+    $("#admin-id").val(id);
+}
+
+$("#change-btn").click(function () {
+    var id = $("#admin-id").val();
     $.ajax({
         type: "get",
-        url: "users/restore/" + id,
+        url: "admins/change-status/" + id,
         headers: {
             "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
         },
         success: function (data) {
-            $('#users').DataTable().ajax.reload()
+            $('#admins').DataTable().ajax.reload()
             $('#success-msg').html(data.message);
             $('#success-msg').show();
             setTimeout(() => {
@@ -268,18 +239,3 @@ $("#restore-btn").click(function () {
         }
     });
 })
-
-
-
-function show(id) {
-    $.get("admins/" + id, function (data) {
-        console.log(data)
-        $("#show-name").html(data.admin.name);
-        $("#show-email").html(data.admin.email);
-        $("#show-phone").html(data.admin.phone);
-        $("#show-type").html(data.admin.type);
-        $("#show-status").html(data.admin.status);
-        $("#show-created-at").html(data.admin.created_at);
-    });
-}
-

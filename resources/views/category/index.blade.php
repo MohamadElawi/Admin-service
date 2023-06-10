@@ -240,6 +240,72 @@
 @endsection
 @section('page-script')
 {{-- Page js files --}}
+<script>
+function datatable() {
+    var table = $("#categories").DataTable({
+        responsive: true,
+        processing: false,
+        serverSide: true,
+        ajax: {
+            type: "get",
+            url: "category/getData",
+            success:function(data){
+                console.log(data)
+            },
+            error:function(data){
 
-<script src="{{ asset('js/scripts/tables/table-datatables-categories.js') }}"></script>
+              console.log(data)
+            }
+        },
+        columns: [
+            {
+                data: function (data) {
+                    return data.DT_RowIndex;
+                },
+                name: "#",
+            },
+            {
+                data: function (data) {
+                    return data.name;
+                },
+                name: "name",
+            },
+            {
+                    data: function (data) {
+                        return (
+                            "<img src='http://127.0.0.1:8080/" +
+                            data.icon +
+                            "' width='100px' style='border-radius: 10%;'/>"
+                        );
+                    },
+                    name: "image",
+                },
+            {
+                data: function (data) {
+                    if (data.status == 'notActive')
+                        return "<small class='badge rounded-pill  badge-light-danger'>" + data.status + "<small>";
+                    else
+                        return "<small class='badge rounded-pill  badge-light-success'>" + data.status + "</small>";
+                },
+                name: "status",
+            },
+            {
+                data: function (data) {
+                    return data.created_at;
+                },
+                name: "Created At",
+            },
+
+            {
+                data: function (data) {
+                    return data.action;
+                },
+                name: "action",
+            },
+        ],
+    });
+}
+datatable();
+</script>
+{{-- <script src="{{ asset('js/scripts/tables/table-datatables-categories.js') }}"></script> --}}
 @endsection

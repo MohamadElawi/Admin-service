@@ -30,7 +30,7 @@ class RegisterController extends Controller
             ]);
 
             $user->assignRole('user');
-            // dispatch(new SendVerificationCode($user));
+            dispatch(new SendVerificationCode($user));
             DB::commit();
             return self::success('Account successfully created');
         } catch (\Exception $ex) {

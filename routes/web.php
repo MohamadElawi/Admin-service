@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +20,11 @@ Route::get('/', function () {
 });
 
 
-Route::get('test',function(){
-    return   $user =\App\Models\User::find(118);
-//     return $user->roles[0]->description;
-//    return $user->getPermissionsViaRoles() ;
-//    return $user->getAllPermissions()->pluck('name');
+Route::get('/test',function(){
+//    $data = ''
 
+
+    $response =Http::get('localhost:8080/api/category');
+    return $response ;
 });
 

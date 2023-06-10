@@ -17,14 +17,15 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-      $remember_me = $request->has('remember') ? 1 : 0 ;
+    //   $remember_me = $request->has('remember') ? 1 : 0 ;
+      $remember_me =  0 ;
       $credentials = $request->only('email', 'password');
       $token = Auth::guard('admin')->attempt($credentials,$remember_me);
         if (!$token ) {
             return redirect()->back()->with(['error'=>'error']);
         }
       $admin=auth('admin')->user();
-      $token =Auth::guard('admin-api')->login($admin);
+      $token =auth('admin-api')->attempt($credentials);
       Session::put('token',$token);
       return redirect()->route('dashboard');
     }
@@ -32,6 +33,7 @@ class LoginController extends Controller
     public function logout()
     {
         $user = auth()->guard('admin')->logout();
+        Session::forget('token');
         return redirect()->route('admin.getlogin')->with(['success'=>'logged out successfullly']);
     }
 

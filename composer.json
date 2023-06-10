@@ -6,15 +6,19 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "blade-ui-kit/blade-heroicons": "^2.1",
+        "brunocfalcao/blade-feather-icons": "^3.0",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
-        "ite-heros/iot-core": "^1.0.17",
+        "ite-heros/iot-core": "^1.0.20",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
         "laravel/ui": "3.4",
+        "mallardduck/blade-boxicons": "^2.4",
         "spatie/laravel-permission": "^5.10",
         "tymon/jwt-auth": "^2.0",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.2",
         "yajra/laravel-datatables-oracle": "^9"
     },
     "require-dev": {

@@ -9,29 +9,12 @@ $(function () {
                 url: "users/getData",
             },
             columns: [
-                // {
-                //     data: function (data) {
-                //         return data.id;
-                //     },
-                //     name: "#",
-                // },
-
                 {
                     data: function (data) {
                         return data.DT_RowIndex;
                     },
                     name: "#",
                 },
-                // {
-                //     data: function (data) {
-                //         return (
-                //             "<img src='http://127.0.0.1:8000" +
-                //             data.icon +
-                //             "' width='100px' style='border-radius: 10%;'/>"
-                //         );
-                //     },
-                //     name: "Icon",
-                // },
                 {
                     data: function (data) {
                         return data.user_name;
@@ -74,47 +57,47 @@ $(function () {
 
                 {
                     data: function (data) {
-                        if(data.status != 'deleted')
-                        return (
-                            '<a onclick=showItem(' + data.id + ')  data-toggle="modal" data-target="#user-show" style="color:#f5cb42;">' +
-                            feather.icons["alert-circle"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#user-edit" style="color:#7367f0">' +
-                            feather.icons["edit"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="blockedItem(' + data.id +')" class="delete-record" data-toggle="modal" data-target="#block-modal" style="color: #6780E5;">' +
-                            feather.icons["lock"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="deleteItem(' + data.id + ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
-                            feather.icons["trash-2"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>"
-                            + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                        );
-                        else
-                            return (
-                                '<a onclick="restoreItem(' + data.id + ')"  data-toggle="modal" data-target="#restore-modal" style="color: #2C9151;">' +
-                            feather.icons["rotate-cw"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>"
-                            + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                            );
+                            // if(data.status != 'deleted')
+                            // return (
+                            //     '<a onclick=showItem(' + data.id + ')  data-toggle="modal" data-target="#user-show" style="color:#f5cb42;">' +
+                            //     feather.icons["alert-circle"].toSvg({
+                            //         class: "font-large-1 me-2",
+                            //     }) +
+                            //     "</a>" +
+                            //     '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#user-edit" style="color:#7367f0">' +
+                            //     feather.icons["edit"].toSvg({
+                            //         class: "font-large-1 me-2",
+                            //     }) +
+                            //     "</a>" +
+                            //     '<a onclick="blockedItem(' + data.id +')" class="delete-record" data-toggle="modal" data-target="#block-modal" style="color: #6780E5;">' +
+                            //     feather.icons["lock"].toSvg({
+                            //         class: "font-large-1 me-2",
+                            //     }) +
+                            //     "</a>" +
+                            //     '<a onclick="deleteItem(' + data.id + ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
+                            //     feather.icons["trash-2"].toSvg({
+                            //         class: "font-large-1 me-2",
+                            //     }) +
+                            //     "</a>"
+                            //     + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
+                            // );
+                            // else
+                            //     return (
+                            //         ' <a onclick="restoreItem(' + data.id + ')"  data-toggle="modal" data-target="#restore-modal" style="color: #2C9151;">' +
+                            //     feather.icons["rotate-cw"].toSvg({
+                            //         class: "font-large-1 me-2",
+                            //     }) +
+                            //     "</a>"
+                            //     + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
+                            //     );
 
+                                return data.action ;
                     },
                     name: "action",
                 },
-            ]
+            ],
         });
     }
-
     datatable();
 });
 
@@ -272,12 +255,12 @@ $("#restore-btn").click(function () {
 function blockedItem(id) {
     $('#item-id').val(id)
     $.get("users/" + id, function (data) {
-       var status = data.user.status ;
-       console.log(status)
-    if (status != 'blocked')
-        $('.block_user').html('block');
-    else
-        $('.block_user').html('unblock');
+        var status = data.user.status;
+        console.log(status)
+        if (status != 'blocked')
+            $('.block_user').html('block');
+        else
+            $('.block_user').html('unblock');
     });
 
 }
@@ -317,4 +300,5 @@ function showItem(id) {
         $("#show-created-at").html(data.user.created_at);
     });
 }
+
 

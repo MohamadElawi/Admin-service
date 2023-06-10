@@ -18,11 +18,11 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        $token = Auth::attempt($credentials);
+        $token = auth()->attempt($credentials);
         if (!$token) {
             return self::failure('Unauthorized', 401);
         }
-        return  $user=auth()->guard('user')->user();
+        $user=auth()->user();
         //  return  User::latest()->first();
          $user->token = $token ;
 

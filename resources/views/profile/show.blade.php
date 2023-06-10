@@ -28,8 +28,8 @@
 
                 <div class="mb-1">
                     <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{$user->name}}"
-                        id="name" placeholder="Enter Name">
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                        value="{{ $user->name }}" id="name" placeholder="Enter Name">
                     @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -40,8 +40,8 @@
                 <!-- Email -->
                 <div class="mb-1">
                     <label for="email">email</label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$user->email}}"
-                       style="text-align: left" id="email" placeholder="Enter email">
+                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                        value="{{ $user->email }}" style="text-align: left" id="email" placeholder="Enter email">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -131,12 +131,11 @@
 @endsection
 
 @section('page-script')
- <script>
-       $(document).ready(function(){
+    <script>
+        $(document).ready(function() {
             setTimeout(() => {
                 $(".alert").hide();
             }, 3000);
-       })
+        })
     </script>
 @endsection
-

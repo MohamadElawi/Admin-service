@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Resources\Admin\UserResource;
 use App\Http\Traits\HttpResponse;
+use App\Jobs\BlockedUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class UserController extends Controller
     use HttpResponse;
     public function index()
     {
+        // return auth('admin')->user();
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "users"]
         ];
@@ -31,6 +33,7 @@ class UserController extends Controller
     {
         $users = User::withTrashed()->latest()->get();
         return Datatables::of($users)
+            ->addColumn('action','admin.users.actions')
             ->addIndexColumn()
             ->make(true);
     }
@@ -108,6 +111,8 @@ class UserController extends Controller
         $user->status == 'blocked' ? ($user->email_verified_at != null ? $user->status = 'active' : $user->status = 'notActive')
         : $user->status = 'blocked' ;
         $user->save();
+        $message = $user->status == 'blocked' ? 'blocked' : 'unblocked' ;
+        dispatch(new BlockedUser($user->toArray(),$message));
         return self::success("user $user->status successfully");
     }
 }
