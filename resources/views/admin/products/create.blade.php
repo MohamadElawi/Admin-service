@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 
-@section('title', 'Create New category')
+@section('title', 'Create New Product')
 
 @section('vendor-style')
     <!-- vendor css files -->
@@ -92,17 +92,6 @@
 
                         <div class="row">
                             <div class="mb-1 col-md-6">
-                                <label class="form-label" for="image">Image</label>
-                                <input type="file" name="image" class="form-control" value="{{ old('image') }}"
-                                    required />
-                                @error('image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-1 col-md-6">
                                 <label class="form-label" for="details">Details</label>
 
                                 <input type='text' class="form-control @error('details_en') is-invalid @enderror"
@@ -113,14 +102,28 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <div class="mb-1 col-md-6">
+                                <label class="form-label" for="image">Image</label>
+                                <input type="file" name="image" class="form-control" value="{{ old('image') }}"
+                                    required />
+                                @error('image')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                         </div>
 
                         <div class="row">
-                            <div class="mb-1 col-md-6">
-                                <input type="checkbox" name="is_special" class="form-check-input" value="1"/>
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <div class="mb-1 col-md-6" style="display: flex;  align-items: center">
+                                <input style="width: 24px;height: 24px" type="checkbox" name="is_special" class="form-check-input" value="1"/>
+                                <label style="padding:2px ;" class="form-check-label" for="flexCheckDefault">
                                     Is Special
                                   </label>
+
+
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">

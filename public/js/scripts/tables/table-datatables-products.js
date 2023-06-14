@@ -35,15 +35,24 @@ $(function () {
                     name: "price",
                 },
                 {
-                        data: function (data) {
-                            return (
-                                "<img src='" +
-                                data.image +
-                                "' width='50px' style='border-radius: 10%;'/>"
-                            );
-                        },
-                        name: "image",
+                    data: function (data) {
+                        return (
+                            "<img src='" +
+                            data.image +
+                            "' width='50px' style='border-radius: 10%;'/>"
+                        );
                     },
+                    name: "image",
+                },
+                {
+                    data: function (data) {
+                      if (data.is_special == 1)
+                        return 'yes'
+                      else
+                        return 'no'
+                    },
+                    name: "is special",
+                },
                 {
                     data: function (data) {
                         if (data.status == 'notActive')
@@ -77,15 +86,15 @@ $(function () {
 function deleteItem(id) {
     console.log(id)
     $("#item-id").val(id);
-   console.log($('#item-id').val())
+    console.log($('#item-id').val())
 }
 
 $("#delete-btn").click(function () {
-    var id =$('#item-id').val();
+    var id = $('#item-id').val();
     console.log(id)
     $.ajax({
         type: "delete",
-        url: "category/" + id,
+        url: "product/" + id,
         headers: {
             "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
         },
@@ -107,15 +116,15 @@ $("#delete-btn").click(function () {
     });
 });
 
-    $('#edit-modal').on('hidden.bs.modal', function() {
-      // Clear data when the modal is closed
-      $(this).find('.modal-body').empty();
-    });
+$('#edit-modal').on('hidden.bs.modal', function () {
+    // Clear data when the modal is closed
+    $(this).find('.modal-body').empty();
+});
 
-    $("#close").click(function(){
-        console.log('dd')
-        $("#image").removeAttr('src');
-        })
+$("#close").click(function () {
+    console.log('dd')
+    $("#image").removeAttr('src');
+})
 // change status
 
 function changeStatus(id) {
@@ -126,12 +135,12 @@ $("#change-btn").click(function () {
     var id = $("#item-id").val();
     $.ajax({
         type: "get",
-        url: "category/change-status/" + id,
+        url: "product/change-status/" + id,
         headers: {
             "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
         },
         success: function (data) {
-            $('#categories').DataTable().ajax.reload()
+            $('#products').DataTable().ajax.reload()
             $('#success-msg').html(data.message);
             $('#success-msg').show();
             setTimeout(() => {
@@ -154,7 +163,7 @@ function editItem(id) {
         $("#id").val(category.id);
         $("#name").val(category.name);
         $("#description").val(category.description);
-        $("#image").attr('src',category.image);
+        $("#image").attr('src', category.image);
     });
 }
 
@@ -162,7 +171,7 @@ function editItem(id) {
 $("#sub-edit").click(function () {
     // e.preventDefault();
     var form = new FormData($("#form-edit")[0]);
-    var id =$("#id").val();
+    var id = $("#id").val();
     console.log(id);
     $('#editnameError').addClass('d-none');
     $('#editpriceError').addClass('d-none');
@@ -171,9 +180,9 @@ $("#sub-edit").click(function () {
         type: "post",
         headers: {
             "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
-            "accept" : "application/json"
+            "accept": "application/json"
         },
-        url: "category/"+id,
+        url: "category/" + id,
         data: form,
         dataType: "text",
         processData: false, // tell jQuery not to process the data
@@ -190,19 +199,19 @@ $("#sub-edit").click(function () {
         error: function (data) {
             console.log(data)
             var errors = JSON.parse(data.responseText);
-                console.log(errors)
-                if($.isEmptyObject(errors) == false) {
+            console.log(errors)
+            if ($.isEmptyObject(errors) == false) {
 
-                    $.each(errors.errors,function (key, value) {
-                        console.log(key)
-                        console.log(value)
-                        var ErrorID = '#edit'+ key +'Error';
+                $.each(errors.errors, function (key, value) {
+                    console.log(key)
+                    console.log(value)
+                    var ErrorID = '#edit' + key + 'Error';
 
-                        $(ErrorID).removeClass("d-none");
-                        $(ErrorID).text(value)
-                    })
+                    $(ErrorID).removeClass("d-none");
+                    $(ErrorID).text(value)
+                })
 
-                }
+            }
         },
     });
 });
@@ -215,7 +224,7 @@ function showItem(id) {
     $.get("category/" + id, function (category) {
         $("#show-name").html(category.name);
         $("#show-description").html(category.description);
-        $("#show-image").attr('src',category.image);
+        $("#show-image").attr('src', category.image);
         $("#show-status").html(category.status);
         $("#show-created-at").html(category.created_at);
     });

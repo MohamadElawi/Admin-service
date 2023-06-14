@@ -32,12 +32,12 @@ class ProductController extends Controller
     public function getData()
     {
         try {
-            $response = Http::withToken($this->token)->get($this->url . '/admin/product');
+            $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/product');
             if ($response->status() != 200)
                 abort($response->status());
 
             $data = $response->json();
-            // return $response->json();
+
             return DataTables::of($data)
                 ->addColumn('action', 'admin.products.action')
                 ->addIndexColumn()
@@ -49,10 +49,10 @@ class ProductController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins"]
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "products" , 'link'=>'Admin/products']
         ];
 
-        $response=Http::withToken($this->token)->get($this->url.'/admin/category/get-active-category');
+        $response=Http::withToken(Session::get('token'))->get($this->url.'/admin/category/get-active-category');
         if($response->status() != 200)
             return redirect()->route('product.index')->with(['error'=>'some things went wronsg']);
         $categories =$response->json();
@@ -62,8 +62,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // return $request ;
-        $data = $request->only('name_en', 'description_en','price','is_special','category_id','details_en');
-         $response = Http::withToken($this->token)->attach(
+        $data = $request->only('name_en', 'description_en','price','is_special','quantity','category_id','details_en','quantity_special_product');
+         $response = Http::withToken(Session::get('token'))->attach(
             'image',
             file_get_contents($request->image),
             $request->image->getClientOriginalName()
@@ -81,7 +81,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $response = Http::withToken($this->token)->get($this->url . '/admin/product/' . $id);
+        $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/product/' . $id);
         if ($response->status() != 200)
             return response()->json(['message' => 'some things went wrongs'], $response->status());
 
@@ -90,18 +90,18 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, $id)
     {
-        $data = $request->only('name_en', 'description_en','_method');
+        $data = $request->only('name_en', 'description_en','quantity','details_en','_method');
 
         if ($request->has('image')){
             // return 'image';
-            $response = Http::withToken($this->token)->attach(
+            $response = Http::withToken(Session::get('token'))->attach(
                 'image',
                 file_get_contents($request->image),
                 $request->image->getClientOriginalName()
             )->post($this->url . '/admin/category/' . $id, $data);
             }
         else
-            $response = Http::withToken($this->token)
+            $response = Http::withToken(Session::get('token'))
                 ->post($this->url . '/admin/category/' . $id, $data);
 
         if ($response->status() != 200)
@@ -112,7 +112,7 @@ class ProductController extends Controller
 
     public function changeStatus($id)
     {
-        $response = Http::withToken($this->token)->get($this->url . '/admin/product/change-status/' . $id);
+        $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/product/change-status/' . $id);
         if ($response->status() == 404)
             return failure('not found', 404);
 
@@ -124,7 +124,7 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        $response = Http::withToken($this->token)->delete($this->url . '/admin/product/' . $id);
+        $response = Http::withToken(Session::get('token'))->delete($this->url . '/admin/product/' . $id);
         if ($response->status() == 404)
             return response()->json('not found', 404);
 

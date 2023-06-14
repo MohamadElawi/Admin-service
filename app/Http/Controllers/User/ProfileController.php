@@ -15,7 +15,8 @@ class ProfileController extends Controller
 {
     use HttpResponse ;
     public function getProfile(){
-        return self::returnData('profile',ProfileResource::make(auth()->guard('user')->user()));
+         $user =auth()->user();
+        return self::returnData('profile',ProfileResource::make($user));
     }
 
     public function editUserName(ProfileRequest $request){

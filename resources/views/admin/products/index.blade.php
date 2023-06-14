@@ -26,9 +26,7 @@
 
             <a class="btn btn-primary" href="{{ route('product.create') }}">
                 Add new record
-
             </a>
-
         </div>
     </div>
     @include('includes.alerts.success')
@@ -94,30 +92,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{-- <table class="table-responsive ">
-                        <tr height="50px">
-                            <td><strong>Name: </strong></td>
-                            <td id="show-name"></td>
-                        </tr>
-                        <tr height="50px">
-                            <td><strong>Description:</strong></td>
-                            <td id="show-description"></td>
-                        </tr>
-                        <tr height="50px">
-                            <td><strong>status: </strong></td>
-                            <td id="show-status"></td>
-                        </tr>
-                        <tr height="50px">
-                            <td><strong>created at:</strong></td>
-                            <td id="show-created-at"></td>
-                        </tr>
-                        <tr height="50px">
-                            <td><strong>image: </strong></td>
-                            <img id="show-image" width="100px"></img>
-                        </tr>
-                    </table> --}}
-
-
                     <h5>Name</h5>
                     <p id="show-name"></p>
                     <hr>
@@ -158,6 +132,7 @@
                                 <th>category</th>
                                 <th>price</th>
                                 <th>image</th>
+                                <th>is special</th>
                                 <th>Status</th>
                                 <th>Created At</th>
                                 <th width="20%">Action</th>

@@ -89,18 +89,18 @@
         ]
       },
       {
-        "name": "page-category",
+        "name": "Product",
         "icon": "tag",
         "slug": "",
         "submenu": [
           {
-            "url": "Admin/page/category",
+            "url": "Admin/product",
             "name": "List",
             "icon": "circle",
             "slug": "app-mentor-list"
           },
           {
-            "url": "Admin/page/category/create",
+            "url": "Admin/product/create",
             "name": "Add",
             "icon": "circle",
             "slug": "app-mentor-add"
