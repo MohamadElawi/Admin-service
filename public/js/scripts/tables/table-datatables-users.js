@@ -1,4 +1,11 @@
 $(function () {
+    $(document).ready(function () {
+        setTimeout(() => {
+            $(".alert").hide();
+        }, 3000);
+    })
+
+
     function datatable() {
         var table = $("#users").DataTable({
             responsive: true,
@@ -57,41 +64,7 @@ $(function () {
 
                 {
                     data: function (data) {
-                            // if(data.status != 'deleted')
-                            // return (
-                            //     '<a onclick=showItem(' + data.id + ')  data-toggle="modal" data-target="#user-show" style="color:#f5cb42;">' +
-                            //     feather.icons["alert-circle"].toSvg({
-                            //         class: "font-large-1 me-2",
-                            //     }) +
-                            //     "</a>" +
-                            //     '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#user-edit" style="color:#7367f0">' +
-                            //     feather.icons["edit"].toSvg({
-                            //         class: "font-large-1 me-2",
-                            //     }) +
-                            //     "</a>" +
-                            //     '<a onclick="blockedItem(' + data.id +')" class="delete-record" data-toggle="modal" data-target="#block-modal" style="color: #6780E5;">' +
-                            //     feather.icons["lock"].toSvg({
-                            //         class: "font-large-1 me-2",
-                            //     }) +
-                            //     "</a>" +
-                            //     '<a onclick="deleteItem(' + data.id + ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
-                            //     feather.icons["trash-2"].toSvg({
-                            //         class: "font-large-1 me-2",
-                            //     }) +
-                            //     "</a>"
-                            //     + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                            // );
-                            // else
-                            //     return (
-                            //         ' <a onclick="restoreItem(' + data.id + ')"  data-toggle="modal" data-target="#restore-modal" style="color: #2C9151;">' +
-                            //     feather.icons["rotate-cw"].toSvg({
-                            //         class: "font-large-1 me-2",
-                            //     }) +
-                            //     "</a>"
-                            //     + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                            //     );
-
-                                return data.action ;
+                        return data.action;
                     },
                     name: "action",
                 },

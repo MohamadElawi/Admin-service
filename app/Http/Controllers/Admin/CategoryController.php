@@ -13,11 +13,12 @@ use Yajra\DataTables\Facades\DataTables;
 class CategoryController extends Controller
 {
     // private $url = '192.168.1.106:8080';
-    private $url = '127.0.0.1:8080';
+    private $url;
     public $token;
 
     public function __construct()
     {
+        $this->url = env('PRODUCT_SERVICE_PORT');
         $this->token = Session::get('token');
     }
 

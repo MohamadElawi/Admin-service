@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
@@ -48,3 +49,7 @@ Route::resource('category',CategoryController::class);
 Route::get('product/getData',[ProductController::class ,'getData']);
 Route::get('product/change-status/{category}',[ProductController::class,'changeStatus']);
 Route::resource('product',ProductController::class);
+
+
+Route::get('order/getData',[OrderController::class ,'getData']);
+Route::resource('order',OrderController::class);

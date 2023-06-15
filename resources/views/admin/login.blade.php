@@ -1,4 +1,4 @@
-@extends('layouts/FullLayoutMaster')
+@extends('layouts/fullLayoutMaster')
 
 @section('title', 'Login')
 
@@ -102,7 +102,7 @@
             <button type="submit" class="btn btn-primary w-100" tabindex="4">Sign in</button>
           </form>
 
-       
+
 
           <div class="divider my-2">
             <div class="divider-text"></div>

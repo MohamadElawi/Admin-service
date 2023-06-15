@@ -86,7 +86,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">show category</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">show Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -95,17 +95,32 @@
                     <h5>Name</h5>
                     <p id="show-name"></p>
                     <hr>
+                    <h5>Category</h5>
+                    <p id="show-category"></p>
+                    <hr>
                     <h5>Description</h5>
                     <p id="show-description"></p>
                     <hr>
-                    <h5>Status</h5>
+                    <h5>Details</h5>
+                    <p id="show-details"></p>
+                    <hr>
+                    <h5>Quantity</h5>
+                    <p id="show-quantity"></p>
+                    <hr>
+                    <h5>Price</h5>
+                    <p id="show-price"></p>
+                    <hr>
+                    <h5>Is special</h5>
+                    <p id="show-is-special"></p>
+                    <hr>
+                    <h5>status</h5>
                     <p id="show-status"></p>
                     <hr>
                     <h5>Created at</h5>
                     <p id="show-created-at"></p>
                     <hr>
                     <h5>image</h5>
-                    <img id="show-image" width="200px" height="200px" style="display: block"></p>
+                    <img id="show-image" width="200px"  height="200px" style="margin: auto; border: 1rem ; display: block"></p>
 
 
                 </div>

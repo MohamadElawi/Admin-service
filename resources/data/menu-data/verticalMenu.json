@@ -108,13 +108,13 @@
         ]
       },
       {
-        "name": "Pages",
+        "name": "orders",
         "icon": "settings",
         "slug": "",
         "submenu": [
           {
-            "url": "product",
-            "name": "Countact us",
+            "url": "Admin/order",
+            "name": "all",
             "icon": "circle",
             "slug": "app-mentor-Countact-us"
           },

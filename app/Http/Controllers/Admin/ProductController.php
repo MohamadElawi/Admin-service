@@ -13,11 +13,12 @@ use Yajra\DataTables\Facades\DataTables;
 class ProductController extends Controller
 {
     // private $url = '192.168.1.106:8080';
-    private $url = '127.0.0.1:8080';
+    private $url;
     private $token;
 
     public function __construct()
     {
+        $this->url = env('PRODUCT_SERVICE_PORT') ;
         $this->token = Session::get('token');
     }
 
@@ -49,24 +50,23 @@ class ProductController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "products" , 'link'=>'Admin/products']
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "products", 'link' => 'Admin/products']
         ];
 
-        $response=Http::withToken(Session::get('token'))->get($this->url.'/admin/category/get-active-category');
-        if($response->status() != 200)
-            return redirect()->route('product.index')->with(['error'=>'some things went wronsg']);
-        $categories =$response->json();
-        return view('admin.products.create', compact('breadcrumbs','categories'));
+        $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/category/get-active-category');
+        if ($response->status() != 200)
+            return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
+        $categories = $response->json();
+        return view('admin.products.create', compact('breadcrumbs', 'categories'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // return $request ;
-        $data = $request->only('name_en', 'description_en','price','is_special','quantity','category_id','details_en','quantity_special_product');
-         $response = Http::withToken(Session::get('token'))->attach(
-            'image',
-            file_get_contents($request->image),
-            $request->image->getClientOriginalName()
+        $data = $request->only('name_en', 'description_en', 'price', 'is_special', 'quantity', 'category_id', 'details_en');
+        $response = Http::withToken(Session::get('token'))->attach(
+            'main_image',
+            file_get_contents($request->main_image),
+            $request->main_image->getClientOriginalName()
         )->post($this->url . '/admin/product', $data);
 
         if ($response->status() == 400)
@@ -88,26 +88,44 @@ class ProductController extends Controller
         return $response->json();
     }
 
+    public function edit($id){
+        $breadcrumbs = [
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "products", 'link' => 'Admin/products']
+        ];
+
+        $response =Http::withToken(Session::get('token'))->get($this->url . "/admin/product/$id");
+        if ($response->status() != 200)
+              return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
+
+        $product = $response->json();
+
+        $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/category/get-active-category');
+        if ($response->status() != 200)
+            return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
+
+        $categories = $response->json();
+        return view('admin.products.edit', compact('breadcrumbs','categories','product'));
+    }
+
     public function update(ProductRequest $request, $id)
     {
-        $data = $request->only('name_en', 'description_en','quantity','details_en','_method');
-
-        if ($request->has('image')){
-            // return 'image';
+        $data = $request->validated();
+        $data['_method'] = 'put';
+        if ($request->has('main_image')) {
             $response = Http::withToken(Session::get('token'))->attach(
-                'image',
-                file_get_contents($request->image),
-                $request->image->getClientOriginalName()
-            )->post($this->url . '/admin/category/' . $id, $data);
-            }
-        else
+                'main_image',
+                file_get_contents($request->main_image),
+                $request->main_image->getClientOriginalName()
+            )->post($this->url . '/admin/product/' . $id, $data);
+
+        } else
             $response = Http::withToken(Session::get('token'))
-                ->post($this->url . '/admin/category/' . $id, $data);
+                ->post($this->url . '/admin/product/' . $id, $data);
 
         if ($response->status() != 200)
             return failure($response->json(), $response->status());
 
-        return success('updated successfully');
+         return redirect()->route('product.index')->with(['success' => 'created successfully']);
     }
 
     public function changeStatus($id)

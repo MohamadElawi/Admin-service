@@ -1,4 +1,9 @@
 $(function () {
+    $(document).ready(function(){
+        setTimeout(() => {
+            $(".alert").hide();
+        }, 3000);
+     })
 
     function datatable() {
         var table = $("#categories").DataTable({

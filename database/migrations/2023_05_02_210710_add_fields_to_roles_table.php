@@ -10,7 +10,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->text('status')->after('guard_name')->default('active');
+            $table->string('status')->default('active');
         });
 
         Schema::table('permissions', function (Blueprint $table) {
