@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,3 +54,6 @@ Route::resource('product',ProductController::class);
 
 Route::get('order/getData',[OrderController::class ,'getData']);
 Route::resource('order',OrderController::class);
+
+Route::get('service/getData',[ServiceController::class ,'getData'])->withoutMiddleware('auth:admin');
+Route::resource('service', ServiceController::class)->except('edit');

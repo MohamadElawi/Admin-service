@@ -1,8 +1,8 @@
-{{-- <a onclick=showItem({{ $id }}) data-toggle="modal" data-target="#show">
+<a onclick=showItem({{ $id }}) data-toggle="modal" data-target="#show">
     <x-bx-show-alt style="width:30px;height:30px;color: #f5cb42"/>
 </a>
 
-@can('edit user')
+{{-- @can('edit user')
     <a onclick=editItem({{ $id }})  data-toggle="modal" data-target="#edit-modal">
         <x-feathericon-edit style="width:30px;height:30px"/>
     </a>

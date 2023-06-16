@@ -138,6 +138,25 @@
           }
         ]
       },
+      {
+        "name": "Service",
+        "icon": "tag",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/service",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          },
+          {
+            "url": "Admin/service",
+            "name": "Add",
+            "icon": "circle",
+            "slug": "app-mentor-add"
+          }
+        ]
+      },
 
     {
       "url": "app/calendar",
