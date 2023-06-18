@@ -35,7 +35,7 @@ $(function () {
                 },
                 {
                     data: function (data) {
-                        if (data.active == 0)
+                        if (data.active == 'not active')
                             return "<small class='badge rounded-pill  badge-light-danger'>" + 'not-active' + "<small>";
                         else
                             return "<small class='badge rounded-pill  badge-light-success'>" + 'active' + "</small>";
@@ -78,8 +78,9 @@ $("#delete-btn").click(function () {
             "X-CSRF-TOKEN": $("meta[name=csrf-token]").attr("content"),
         },
         success: function (data) {
-            $("#categories").DataTable().ajax.reload();
-            $('#services-msg').html(data.message);
+            console.log(data.message)
+            $("#services").DataTable().ajax.reload();
+            $('#success-msg').html(data.message);
             $('#success-msg').show();
             setTimeout(() => {
                 $(".alert-success").hide();
@@ -96,14 +97,14 @@ $("#delete-btn").click(function () {
 });
 
 
-// edit 
+// edit
 
 function editItem(id) {
     $.get("service/" + id, function (service) {
         $("#id").val(service._id);
         $("#name").val(service.name);
         $("#description").val(service.description);
-        $("#active").val(service.active).attr("selected", "selected");
+        $("#active").val(service.active);
     });
 }
 
@@ -124,6 +125,7 @@ $("#sub-edit").click(function () {
         processData: false, // tell jQuery not to process the data
         contentType: false,
         success: function (data) {
+            console.log(data)
             $("#services").DataTable().ajax.reload();
             $("#close").click();
             $("#success-msg").html(data.message);
@@ -143,16 +145,3 @@ $("#sub-edit").click(function () {
     });
 });
 
-
-
-
-
-function showItem(id) {
-    $.get("category/" + id, function (category) {
-        $("#show-name").html(category.name);
-        $("#show-description").html(category.description);
-        $("#show-image").attr('src',category.image);
-        $("#show-status").html(category.status);
-        $("#show-created-at").html(category.created_at);
-    });
-}

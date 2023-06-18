@@ -26,7 +26,7 @@
     <section class="modern-horizontal-wizard">
         <div class=" wizard-modern modern-wizard-example">
             <div class="bs-stepper-header">
-                <form class="form" method="post" action="{{ ROUTE('roles.store') }}"
+                <form class="form" method="post" action=""
                     style="    width: 100%;
 
     padding: 3rem 2rem; border-radius: 10px;">
@@ -35,61 +35,54 @@
                     <div id="account-details-modern" class="content" role="tabpanel"
                         aria-labelledby="account-details-modern-trigger" style="margin-left: 0 !important;">
                         <div class="content-header">
-                            <h5 class="mb-0">admin Details</h5>
-                            <small class="text-muted">Enter Your admin Info.</small>
+                            <h5 class="mb-0">Order Details</h5>
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="mb-1 col-md-6">
-                                <label class="form-label" for="user_name">name</label>
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required />
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-
-
 
                     </div>
                     @foreach ($data as $item)
-                    @if(count($item))
+
                     <div class="card">
                         <div class="card-header">
 
-                            <h4 class="card-title text-uppercase">{{$item->first()->category}}</h4>
+                            <h4 class="card-title text-uppercase">{{$item['product_name']}}</h4>
                         </div>
-
+{{--
                         <div class="card-body">
                             <div class="row">
-                                @foreach ($item as $key=>$permission)
                                     <div class="mb-1 col-4">
-                                        <label for="name" class="form-check-label mx-auto">{{$permission->name}}
+                                        <label for="name" class="form-check-label mx-auto">{{$item['product_name']}}
                                         </label>
-                                        <input type="checkbox" class="form-check-input" name="permissions[]"
-                                            value="{{$permission->id}}" id="name">
+                                        <label for="name" class="form-check-label mx-auto">{{$item['price']}}</label>
+                                            <label for="name" class="form-check-label mx-auto">{{$item['quantity']}}</label>
+                                                <label for="name" class="form-check-label mx-auto">{{$item['price'] * $item['quantity']}}</label>
+                                        <img src="{{$item['product_image']}}" width="40px" height="40px">
                                     </div>
-                                    @if(($key+1) % 4 == 0)
-                                         </div><div class="row">
-                                    @endif
-                                @endforeach
+
                             </div>
 
-                            {{-- <div class="d-flex justify-content-end">
-                                    <div class="d-flex align-items-baseline">
-                                        <button type="submit" class="btn btn-primary text-uppercase waves-effect waves-float waves-light">
-                                            Save
-                                        </button>
-                                    </div>
-                                </div> --}}
                         </div>
+                    </div> --}}
+
+                    <div class="card-body">
+                        <div class="row">
+                          <div class="col-8">
+                            <p class="key-value">
+                              <span class="key">Price:</span> {{$item['price']}}
+                            </p>
+                            <p class="key-value">
+                              <span class="key">Quantity:</span> {{(int)$item['quantity']}}
+                            </p>
+                            <p class="key-value">
+                              <span class="key">Total Price:</span> {{$item['price'] * $item['quantity']}}
+                            </p>
+                          </div>
+                          <div class="col-4 d-flex align-items-center justify-content-end">
+                            <img src="{{$item['product_image']}}" class="product-image" width="200px" height="140px">
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    @endif
                     @endforeach
 
                     <div class="d-flex justify-content-between">

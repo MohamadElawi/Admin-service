@@ -62,7 +62,7 @@
             "slug": "app-mentor-list"
           },
           {
-            "url": "Admin/admins/create",
+            "url": "Admin/roles/create",
             "name": "Add",
             "icon": "circle",
             "slug": "app-mentor-add"

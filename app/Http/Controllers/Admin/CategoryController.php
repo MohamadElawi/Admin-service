@@ -34,7 +34,7 @@ class CategoryController extends Controller
     {
         try {
 
-           return $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/category');
+            $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/category');
             if ($response->status() != 200)
                 abort($response->status());
 

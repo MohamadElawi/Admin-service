@@ -46,12 +46,16 @@ class OrderController extends Controller
     }
 
     public function show($order){
-        $response = Http::withToken($this->token)->get($this->url ."/admin/order/$order");
+        $breadcrumbs = [
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "orders" , 'link'=>'/Admin/order']
+        ];
+
+         $response = Http::withToken($this->token)->get($this->url ."/admin/order/$order");
         if($response->status() != 200)
             abort($response->status());
-        
+
         $data =$response->json();
-        return view('admin.orders.items',compact('data'));
+        return view('admin.orders.items',compact('data','breadcrumbs'));
     }
 
 

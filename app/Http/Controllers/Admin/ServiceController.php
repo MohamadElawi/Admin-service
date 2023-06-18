@@ -39,10 +39,10 @@ class ServiceController extends Controller
 
             $data = $response->json();
             $arr = [];
-            
+
             foreach($data as $raw){
-                $raw['id'] = $raw['_id'];  
-                unset($raw['_id']); 
+                $raw['id'] = $raw['_id'];
+                unset($raw['_id']);
                 array_push($arr ,$raw);
             }
 
