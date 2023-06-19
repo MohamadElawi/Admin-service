@@ -1,10 +1,10 @@
      @if ($status != 'deleted')
          <a onclick=showItem({{ $id }}) data-toggle="modal" data-target="#user-show" style="color:#f5cb42;">
-             <span class="icon" data-feather="alert-circle"></span> </a>
+            <x-bx-show-alt style="width:30px;height:30px;color: #f5cb42"/>
          @can('edit user')
              <a onclick=editItem({{ $id }}) class="item-edit" data-toggle="modal" data-target="#user-edit"
                  style="color:#7367f0">
-                 <i data-feather="edit"></i>
+                 <x-feathericon-edit style="width:30px;height:30px"/>
                  {{-- <span class="btn btn-success">delete</span> --}}
              </a>
          @endcan
@@ -12,17 +12,17 @@
          @can('block user')
              <a onclick="blockedItem({{ $id }})" class="delete-record" data-toggle="modal"
                  data-target="#block-modal" style="color: #6780E5;">
-                 <span class="icon" data-feather="lock"></span></a>
+                 <x-heroicon-o-arrow-path-rounded-square style="width:30px;height:30px;color: #18b2c6d0" /></a>
          @endcan
 
 
 
-         @can('delete user')
+         
              <a onclick="deleteItem({{ $id }})" class="delete-record" data-toggle="modal"
                  data-target="#delete-modal" style="color: #EE4B2B;">
-                 <span class="icon" data-feather="trash-2"></span>
+                 <x-heroicon-o-trash style="width:30px;height:30px;color: #EE4B2B" />
              </a>
-         @endcan
+
 
          <meta name="csrf-token" content="{{ csrf_token() }}">
          </meta>
@@ -30,7 +30,7 @@
          @can('block user')
              <a onclick="restoreItem({{ $id }})" data-toggle="modal" data-target="#restore-modal"
                  style="color: #2C9151;">
-                 <span class="icon" data-feather="rotate-cw"></span></a>
+                <x-lineawesome-trash-restore-alt-solid   style="width:30px;height:30px;color: #2bee99" /></a>
          @endcan
 
          <meta name="csrf-token" content="{{ csrf_token() }}">
