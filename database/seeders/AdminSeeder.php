@@ -23,6 +23,6 @@ class AdminSeeder extends Seeder
             'phone'=>'1234564871' ,
         ]);
 
-        $admin->assignRole('admin');
+        $admin->assignRole('superAdmin');
     }
 }

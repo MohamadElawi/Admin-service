@@ -46,24 +46,7 @@ $(function () {
 
                 {
                     data: function (data) {
-                        return (
-                            '<a  href="roles/'+data.id+'/edit"  style="color:#7367f0">' +
-                            feather.icons["edit"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="changeStatus(' + data.id +')"  data-toggle="modal" data-target="#change-status-modal" style="color: #6780E5;">' +
-                            feather.icons["lock"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="deleteItem(' + data.id + ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
-                            feather.icons["trash-2"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>"
-                            + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                        );
+                        return data.action ;
                     },
                     name: "action",
                 },

@@ -74,7 +74,7 @@
                                         <input type="checkbox" class="form-check-input" name="permissions[]"
                                             value="{{$permission->id}}" id="name">
                                     </div>
-                                    @if(($key+1) % 4 == 0)
+                                    @if(($key+1) % 3 == 0)
                                          </div><div class="row">
                                     @endif
                                 @endforeach

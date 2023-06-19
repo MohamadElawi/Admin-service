@@ -85,9 +85,6 @@
                     </div>
                     @endforeach
 
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success" style="margin-inline-start: auto;">Submit</button>
-                    </div>
                 </form>
             </div>
         </div>

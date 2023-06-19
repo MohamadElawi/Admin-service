@@ -11,11 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-    <style>
-        #admins_wrapper {
-            margin: 10px;
-        }
-    </style>
+    <style>#products_wrapper {margin: 10px;}</style>
 @endsection
 
 @section('content')
@@ -23,10 +19,11 @@
         <div class="col-10">
         </div>
         <div class="col-2">
-
+            @can('create product')
             <a class="btn btn-primary" href="{{ route('product.create') }}">
                 Add new record
             </a>
+            @endcan
         </div>
     </div>
     @include('includes.alerts.success')
@@ -40,7 +37,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">edit category</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">edit product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

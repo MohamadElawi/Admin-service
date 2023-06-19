@@ -20,16 +20,19 @@ class MaintenanceController extends Controller
         $this->token = Session::get('token');
     }
 
-    public function index(){
+    public function index()
+    {
+        // $admin = auth('admin')->user();
+        // return $admin->can('action maintenance');
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "Maintenance"]
         ];
         return view('admin.maintenances.index', compact('breadcrumbs'));
     }
 
-    public function getData(){
+    public function getData()
+    {
         try {
-
             $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/maintenance');
             if ($response->status() != 200)
                 abort($response->status());
@@ -42,5 +45,41 @@ class MaintenanceController extends Controller
                 ->make(true);
         } catch (HttpException $ex) {
         }
+    }
+
+    public function show($id)
+    {
+        $response = Http::withToken(Session::get('token'))->get($this->url . '/admin/maintenance/' . $id);
+        if ($response->status() != 200)
+            return response()->json(['message' => 'some things went wrongs'], $response->status());
+
+        return $response->json();
+    }
+
+    public function update($id, Request $request)
+    {
+        $data = $request->only('datetime1', 'datetime2', 'datetime3');
+
+        $response = Http::withToken(Session::get('token'))->put($this->url . '/admin/maintenance/' . $id, $data);
+        if ($response->status() != 200)
+            return response()->json(['message' => 'some things went wrongs'], $response->status());
+        return success('added dates successfully');
+    }
+
+    public function addPrice(Request $request, $id)
+    {
+        $request->validate(['price' => 'required|numeric']);
+        $response = Http::withToken(Session::get('token'))->post($this->url . '/admin/maintenance/add-price' . $id);
+        if ($response->status() != 200)
+            return response()->json(['message' => 'some things went wrongs'], $response->status());
+        return response()->json('updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        return  $response = Http::withToken(Session::get('token'))->delete($this->url . '/admin/maintenance/' . $id);
+        if ($response->status() != 200)
+            return response()->json(['message' => 'some things went wrongs'], $response->status());
+        return response()->json('rejected successfully');
     }
 }

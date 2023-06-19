@@ -33,7 +33,7 @@
       },
       {
         "name": "admins mangement",
-        "icon": "user-check",
+        "icon": "users",
         "slug": "",
         "submenu": [
           {
@@ -48,7 +48,8 @@
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],
+        "permission":"view admins"
       },
       {
         "name": "Role Mangement",
@@ -67,11 +68,12 @@
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],
+        "permission":"view roles"
       },
       {
         "name": "category Management",
-        "icon": "users",
+        "icon": "list",
         "slug": "",
         "submenu": [
           {
@@ -86,10 +88,10 @@
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],"permission":"view category"
       },
       {
-        "name": "Product",
+        "name": "Product Management",
         "icon": "tag",
         "slug": "",
         "submenu": [
@@ -105,42 +107,24 @@
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],"permission":"view product"
       },
       {
-        "name": "orders",
-        "icon": "settings",
+        "name": "Order Management",
+        "icon": "shopping-cart",
         "slug": "",
         "submenu": [
           {
             "url": "Admin/order",
-            "name": "all",
+            "name": "List",
             "icon": "circle",
-            "slug": "app-mentor-Countact-us"
-          },
-          {
-            "url": "privacy/index",
-            "name": "Privacy",
-            "icon": "circle",
-            "slug": "app-mentor-privacy"
-          },
-          {
-            "url": "term/index",
-            "name": "Terms",
-            "icon": "circle",
-            "slug": "app-mentor-terms"
-          },
-          {
-            "url": "question/index",
-            "name": "Question",
-            "icon": "circle",
-            "slug": "app-mentor-question"
+            "slug": "app-mentor-list"
           }
-        ]
+        ],"permission":"view order"
       },
       {
-        "name": "Service",
-        "icon": "tag",
+        "name": "Service Management",
+        "icon": "book-open",
         "slug": "",
         "submenu": [
           {
@@ -155,47 +139,29 @@
             "icon": "circle",
             "slug": "app-mentor-add"
           }
-        ]
+        ],"permission":"view service"
       },
+      {
+        "name": "Maintenance",
+        "icon": "tag",
+        "slug": "",
+        "submenu": [
+          {
+            "url": "Admin/maintenance",
+            "name": "List",
+            "icon": "circle",
+            "slug": "app-mentor-list"
+          }
+        ],"permission":"view maintenance"
+      },
+     
+    
 
     {
       "url": "app/calendar",
       "name": "Calendar",
       "icon": "calendar",
       "slug": "app-calendar"
-    },
-
-    {
-      "navheader": "Charts & Maps",
-      "slug": ""
-    },
-    {
-      "name": "Charts",
-      "icon": "pie-chart",
-      "badge": "2",
-      "slug": "",
-      "badgeClass": "badge rounded-pill badge-light-danger ms-auto me-1",
-      "submenu": [
-        {
-          "url": "chart/apex",
-          "name": "Apex",
-          "icon": "circle",
-          "slug": "chart-apex"
-        },
-        {
-          "url": "chart/chartjs",
-          "name": "Chartjs",
-          "icon": "circle",
-          "slug": "chart-chartjs"
-        }
-      ]
-    },
-    {
-      "url": "maps/leaflet",
-      "name": "Leaflet Maps",
-      "icon": "map",
-      "slug": "map-leaflet"
     }
-
   ]
 }

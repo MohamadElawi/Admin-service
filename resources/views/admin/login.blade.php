@@ -8,10 +8,15 @@
 @endsection
 
 @section('content')
+
+
   <div class="auth-wrapper auth-basic px-2">
       <!-- Login basic -->
+    
       <div class="card mb-0">
         <div class="card-body">
+            @include('includes.alerts.success')
+            @include('includes.alerts.errors')
           <a href="#" class="brand-logo">
             <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink" height="28">
@@ -49,11 +54,9 @@
             <h2 class="brand-text text-primary ms-1">Dashboard</h2>
           </a>
 
-          <h4 class="card-title mb-1">Welcome to Vuexy! 👋</h4>
+          <h4 class="card-title mb-1">Welcome  👋</h4>
           <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
 
-          @include('includes.alerts.success')
-          @include('includes.alerts.errors')
           @if (session('status'))
             <div class="alert alert-success mb-1 rounded-0" role="alert">
               <div class="alert-body">

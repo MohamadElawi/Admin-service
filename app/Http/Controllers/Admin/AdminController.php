@@ -19,6 +19,7 @@ class AdminController extends Controller
         $admins = Admin::where('id', '!=', $admin)->latest()->get();
         return DataTables::of($admins)
             ->addIndexColumn()
+            ->addColumn('action', 'admin.admins.action')
             ->make('true');
     }
 
@@ -27,7 +28,7 @@ class AdminController extends Controller
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins"]
         ];
-        $roles = Role::get();
+        $roles = Role::where('status','active')->get();
 
         return view('admin.admins.index', [
             'breadcrumbs' => $breadcrumbs,
@@ -41,7 +42,7 @@ class AdminController extends Controller
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins", 'link' => 'Admin/admins'], ['name' => 'Create Admin']
         ];
 
-        $roles = Role::where('name', '!=', 'user')->get();
+        $roles = Role::where('name', '!=', 'user')->where('status','active')->get();
         return view('admin.admins.create', compact('breadcrumbs', 'roles'));
     }
 

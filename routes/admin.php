@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\MaintenanceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -57,3 +58,7 @@ Route::resource('order',OrderController::class);
 
 Route::get('service/getData',[ServiceController::class ,'getData'])->withoutMiddleware('auth:admin');
 Route::resource('service', ServiceController::class)->except('edit');
+
+Route::get('maintenance/getData',[MaintenanceController::class ,'getData'])->withoutMiddleware('auth:admin');
+Route::post('maintenance/addPrice/{maintenance}',[MaintenanceController::class ,'addPrice']);
+Route::resource('maintenance', MaintenanceController::class)->except('edit');

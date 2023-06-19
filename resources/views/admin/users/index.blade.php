@@ -11,24 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
-    <style>
-        #users_wrapper {
-            margin: 10px;
-        }
-
-        .feather {
-            height: 30px;
-            width: 30px;
-            font-size: large;
-            margin-right: 2em;
-
-        }
-
-        /* a:hover{
-                cursor:pointer ;
-            } */
-    </style>
-    {{-- <link rel="stylesheet" href="{{ asset(mix('css/core.css')) }}" media="all" /> --}}
+    <style>#users_wrapper {margin: 10px;}</style>
 @endsection
 
 @section('content')

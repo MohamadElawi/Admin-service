@@ -16,7 +16,6 @@
             margin: 10px;
         }
     </style>
-    {{-- <link rel="stylesheet" href="{{ asset(mix('css/core.css')) }}" media="all" /> --}}
 @endsection
 
 @section('content')
@@ -24,12 +23,11 @@
         <div class="col-10">
         </div>
         <div class="col-2">
-
+            @can('create admin')
                 <a class="btn btn-primary" href="{{ route('admins.create') }}">
                     Add new record
-
                 </a>
-            
+            @endcan
         </div>
     </div>
     @include('includes.alerts.success')
@@ -182,55 +180,11 @@
 
 
         {{-- change status comfirm --}}
-        <div class="modal fade" id="change-status-modal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to change status?
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="admin-id" value="">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            id="close">Close</button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal"
-                            id="change-btn">change</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('includes.Modal.change-status')
 
 
         {{-- delete comfirm --}}
-        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to delete?
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="user-id" id="admin-id" value="">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            id="close">Close</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"
-                            id="delete-btn">delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('includes.Modal.delete')
     </section>
     <!--/ Basic table -->
 @endsection

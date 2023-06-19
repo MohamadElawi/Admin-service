@@ -81,29 +81,7 @@ $(function () {
 
                 {
                     data: function (data) {
-                        return (
-                            '<a onclick=show(' + data.id + ')  data-toggle="modal" data-target="#show" style="color:#f5cb42;">' +
-                            feather.icons["alert-circle"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a  onclick=editItem(' + data.id + ') class="item-edit" data-toggle="modal" data-target="#edit-modal" style="color:#7367f0">' +
-                            feather.icons["edit"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="changeStatus(' + data.id +')"  data-toggle="modal" data-target="#change-status-modal" style="color: #6780E5;">' +
-                            feather.icons["lock"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>" +
-                            '<a onclick="deleteItem(' + data.id + ')" class="delete-record" data-toggle="modal" data-target="#delete-modal" style="color: #EE4B2B;">' +
-                            feather.icons["trash-2"].toSvg({
-                                class: "font-large-1 me-2",
-                            }) +
-                            "</a>"
-                            + '<meta name="csrf-token" content="{{ csrf_token() }}"></meta>'
-                        );
+                        return data.action ;
                     },
                     name: "action",
                 },
@@ -174,11 +152,11 @@ $("#sub-edit").click(function () {
 
 
 function deleteItem(id) {
-    $("#admin-id").val(id);
+    $("#item-id").val(id);
 }
 
 $("#delete-btn").click(function () {
-    var id = $("#admin-id").val();
+    var id = $("#item-id").val();
     $.ajax({
         type: "delete",
         url: "admins/" + id,
@@ -199,7 +177,7 @@ $("#delete-btn").click(function () {
     });
 })
 
-function show(id) {
+function showItem(id) {
     $.get("admins/" + id, function (data) {
         console.log(data)
         $("#show-name").html(data.admin.name);
@@ -215,11 +193,11 @@ function show(id) {
 
 
 function changeStatus(id) {
-    $("#admin-id").val(id);
+    $("#item-id").val(id);
 }
 
 $("#change-btn").click(function () {
-    var id = $("#admin-id").val();
+    var id = $("#item-id").val();
     $.ajax({
         type: "get",
         url: "admins/change-status/" + id,

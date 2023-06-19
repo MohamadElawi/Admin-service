@@ -17,6 +17,7 @@ class RoleController extends Controller
         $roles =RoleResource::collection(Role::where('name','!=','user')->get());
         return DataTables::of($roles)
             ->addIndexColumn()
+            ->addColumn('action', 'admin.roles.action')
             ->make(true);
     }
 
@@ -34,11 +35,14 @@ class RoleController extends Controller
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "Roles",'link'=>'/Admin/dashboard'],['name'=>'create role']
         ];
         $permissions= [];
-        $data['user_management'] =Permission::where('category','User Management')->get();
         $data['admin_management']=Permission::where('category','Admin Management')->get();
+        $data['user_management'] =Permission::where('category','User Management')->get();
         $data['role_management'] =Permission::where('category','Role Management')->get();
-        $data['order_management'] =Permission::where('category','Order Management')->get();
+        $data['category_management'] =Permission::where('category','Category Management')->get();
         $data['product_management'] =Permission::where('category','Product Management')->get();
+        $data['service_management'] =Permission::where('category','Service Management')->get();
+        $data['order_management'] =Permission::where('category','Order Management')->get();
+        $data['maintenance_management'] =Permission::where('category','Maintenance Management')->get();
         return view('admin.roles.create', compact('breadcrumbs','data'));
     }
 
@@ -47,28 +51,30 @@ class RoleController extends Controller
             'name'=>$request->name ,
             'guard_name'=>'admin'
         ]);
-        
+
         $role->syncPermissions($request->permissions);
-        return redirect()->route('roles.index')->with(['success'=>'Role created successfully']);
+        return redirect()->route('roles.index')->with(['success'=>'created successfully']);
     }
 
     public function edit(Role $role){
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "Roles",'link'=>'/Admin/roles'],['name'=>'edit role']
         ];
-        //  return in_array(1,$role->permissions->pluck('id')->toArray());
-        $data['user_management'] =Permission::where('category','User Management')->get();
         $data['admin_management']=Permission::where('category','Admin Management')->get();
+        $data['user_management'] =Permission::where('category','User Management')->get();
         $data['role_management'] =Permission::where('category','Role Management')->get();
-        $data['order_management'] =Permission::where('category','Order Management')->get();
+        $data['category_management'] =Permission::where('category','Category Management')->get();
         $data['product_management'] =Permission::where('category','Product Management')->get();
+        $data['service_management'] =Permission::where('category','Service Management')->get();
+        $data['maintenance_management'] =Permission::where('category','Maintenance Management')->get();
+        $data['order_management'] =Permission::where('category','Order Management')->get();
         return view('admin.roles.edit',compact('data','role'));
     }
 
     public function update(RoleRequest $request,Role $role){
         $role->update([$request->name]);
         $role->syncPermissions($request->permissions);
-        return redirect()->route('roles.index')->with(['success'=>'Role Updated successfully']);
+        return redirect()->route('roles.index')->with(['success'=>'Updated successfully']);
     }
 
     public function changeStatus(Role $role){

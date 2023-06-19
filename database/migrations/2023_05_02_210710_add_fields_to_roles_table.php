@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('permissions', function (Blueprint $table) {
             $table->text('description_ar')->after('guard_name')->nullable();
             $table->text('description_en')->after('guard_name')->nullable();
-            $table->enum('category',['User Management','Admin Management','Role Management','Order Management','Product Management']);
+            $table->enum('category',['User Management','Admin Management','Role Management','Order Management','Product Management','Category Management','Service Management','Maintenance Management']);
         });
     }
 

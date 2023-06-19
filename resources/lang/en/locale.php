@@ -207,5 +207,11 @@ return [
     "category" => 'category',
     "page-category" => 'page-category',
     "admins mangement" => 'Admin mangement',
+    "Role Mangement" => 'Role Mangement' ,
+    "category Management" => 'category Management' ,
+    "Product Management" => 'Product Management' ,
+    "Maintenance" => 'Maintenance' ,
+    'Order Management' => 'Order Management' ,
+    'Service Management' => 'Service Management', 
 
 ];

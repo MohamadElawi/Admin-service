@@ -17,12 +17,11 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-    //   $remember_me = $request->has('remember') ? 1 : 0 ;
-      $remember_me =  0 ;
+      $remember_me = $request->has('remember') ? 1 : 0 ;
       $credentials = $request->only('email', 'password');
       $token = Auth::guard('admin')->attempt($credentials,$remember_me);
         if (!$token ) {
-            return redirect()->back()->with(['error'=>'error']);
+            return redirect()->back()->with(['error'=>'please check email and password and try again']);
         }
       $admin=auth('admin')->user();
       $token =auth('admin-api')->attempt($credentials);
