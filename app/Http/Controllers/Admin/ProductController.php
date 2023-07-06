@@ -18,8 +18,13 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        $this->url = env('PRODUCT_SERVICE_PORT') ;
+        $this->url = env('PRODUCT_SERVICE_PORT');
         $this->token = Session::get('token');
+        $this->middleware('permission:view product')->only('index', 'getData');
+        $this->middleware('permission:create product')->only('create', 'store');
+        $this->middleware('permission:edit product')->only('update');
+        $this->middleware('permission:change status product')->only('changeStatus');
+        $this->middleware('permission:delete product')->only('destroy');
     }
 
     public function index()
@@ -88,14 +93,15 @@ class ProductController extends Controller
         return $response->json();
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "products", 'link' => 'Admin/products']
         ];
 
-        $response =Http::withToken(Session::get('token'))->get($this->url . "/admin/product/$id");
+        $response = Http::withToken(Session::get('token'))->get($this->url . "/admin/product/$id");
         if ($response->status() != 200)
-              return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
+            return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
 
         $product = $response->json();
 
@@ -104,7 +110,7 @@ class ProductController extends Controller
             return redirect()->route('product.index')->with(['error' => 'some things went wronsg']);
 
         $categories = $response->json();
-        return view('admin.products.edit', compact('breadcrumbs','categories','product'));
+        return view('admin.products.edit', compact('breadcrumbs', 'categories', 'product'));
     }
 
     public function update(ProductRequest $request, $id)
@@ -117,7 +123,6 @@ class ProductController extends Controller
                 file_get_contents($request->main_image),
                 $request->main_image->getClientOriginalName()
             )->post($this->url . '/admin/product/' . $id, $data);
-
         } else
             $response = Http::withToken(Session::get('token'))
                 ->post($this->url . '/admin/product/' . $id, $data);
@@ -125,7 +130,7 @@ class ProductController extends Controller
         if ($response->status() != 200)
             return failure($response->json(), $response->status());
 
-         return redirect()->route('product.index')->with(['success' => 'created successfully']);
+        return redirect()->route('product.index')->with(['success' => 'created successfully']);
     }
 
     public function changeStatus($id)

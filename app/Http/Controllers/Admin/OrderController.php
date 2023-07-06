@@ -18,6 +18,8 @@ class OrderController extends Controller
     {
         $this->url = env('PRODUCT_SERVICE_PORT');
         $this->token = Session::get('token');
+        $this->middleware('permission:view order')->only('index', 'getData');
+        $this->middleware('permission:view order item')->only('show');
     }
 
     public function index()
@@ -45,18 +47,17 @@ class OrderController extends Controller
         }
     }
 
-    public function show($order){
+    public function show($order)
+    {
         $breadcrumbs = [
-            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "orders" , 'link'=>'/Admin/order']
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "orders", 'link' => '/Admin/order']
         ];
 
-         $response = Http::withToken($this->token)->get($this->url ."/admin/order/$order");
-        if($response->status() != 200)
+        $response = Http::withToken($this->token)->get($this->url . "/admin/order/$order");
+        if ($response->status() != 200)
             abort($response->status());
 
-        $data =$response->json();
-        return view('admin.orders.items',compact('data','breadcrumbs'));
+        $data = $response->json();
+        return view('admin.orders.items', compact('data', 'breadcrumbs'));
     }
-
-
 }

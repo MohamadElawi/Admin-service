@@ -18,12 +18,12 @@ class MaintenanceController extends Controller
     {
         $this->url = env('PRODUCT_SERVICE_PORT');
         $this->token = Session::get('token');
+        $this->middleware('permission:view maintenance')->only('index', 'getData');
+        $this->middleware('permission:action maintenance')->only('show', 'update', 'addPrice', 'destroy');
     }
 
     public function index()
     {
-        // $admin = auth('admin')->user();
-        // return $admin->can('action maintenance');
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "Maintenance"]
         ];

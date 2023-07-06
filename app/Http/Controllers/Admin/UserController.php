@@ -16,6 +16,16 @@ use Yajra\DataTables\Facades\Datatables;
 class UserController extends Controller
 {
     use HttpResponse;
+
+    public function __construct()
+    {
+        $this->middleware('permission:view users')->only('index');
+        $this->middleware('permission:create user')->only('create', 'store');
+        $this->middleware('permission:edit user')->only('edit', 'update');
+        $this->middleware('permission:block user')->only('blocked');
+        $this->middleware('permission:delete user')->only('destroy', 'restore');
+    }
+
     public function index()
     {
         // return auth('admin')->user();
@@ -33,7 +43,7 @@ class UserController extends Controller
     {
         $users = User::withTrashed()->latest()->get();
         return Datatables::of($users)
-            ->addColumn('action','admin.users.actions')
+            ->addColumn('action', 'admin.users.actions')
             ->addIndexColumn()
             ->make(true);
     }
@@ -55,17 +65,17 @@ class UserController extends Controller
         DB::beginTransaction();
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
-        $data['status'] = 'active' ;
+        $data['status'] = 'active';
         $user = User::create($data);
         $user->assignRole('user');
         // return Self::success('created successfully');
         DB::commit();
-        return redirect()->route('users.index')->with(['success'=>'created successfully']);
+        return redirect()->route('users.index')->with(['success' => 'created successfully']);
     }
 
     public function show($user_id)
     {
-        $user=User::withTrashed()->findOrFail($user_id);
+        $user = User::withTrashed()->findOrFail($user_id);
         $user = UserResource::make($user);
         return self::returnData('user', $user);
     }
@@ -83,7 +93,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        $data =$request->validated();
+        $data = $request->validated();
         $user->update($data);
         return response()->json('updated successfully');
     }
@@ -93,26 +103,28 @@ class UserController extends Controller
     {
         // maybe you should delete relations if exist
         $user->removeRole('user');
-        $user->status ='deleted';
-        $user->save() ;
+        $user->status = 'deleted';
+        $user->save();
         $user->delete();
         return self::success('user deleted successfully');
     }
 
-    public function restore($user_id){
-       $user= User::withTrashed()->whereNotNull('deleted_at')->findOrFail($user_id);
-       $user->restore();
-       $user->status = 'active' ;
-       $user->save();
-       return self::success('user restored successfully');
+    public function restore($user_id)
+    {
+        $user = User::withTrashed()->whereNotNull('deleted_at')->findOrFail($user_id);
+        $user->restore();
+        $user->status = 'active';
+        $user->save();
+        return self::success('user restored successfully');
     }
 
-    public function blocked(User $user){
+    public function blocked(User $user)
+    {
         $user->status == 'blocked' ? ($user->email_verified_at != null ? $user->status = 'active' : $user->status = 'notActive')
-        : $user->status = 'blocked' ;
+            : $user->status = 'blocked';
         $user->save();
-        $message = $user->status == 'blocked' ? 'blocked' : 'unblocked' ;
-        dispatch(new BlockedUser($user->toArray(),$message));
+        $message = $user->status == 'blocked' ? 'blocked' : 'unblocked';
+        dispatch(new BlockedUser($user->toArray(), $message));
         return self::success("user $user->status successfully");
     }
 }

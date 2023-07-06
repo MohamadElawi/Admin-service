@@ -20,6 +20,11 @@ class CategoryController extends Controller
     {
         $this->url = env('PRODUCT_SERVICE_PORT');
         $this->token = Session::get('token');
+        $this->middleware('permission:view category')->only('index', 'getData');
+        $this->middleware('permission:create category')->only('create', 'store');
+        $this->middleware('permission:edit category')->only('update');
+        $this->middleware('permission:change status category')->only('changeStatus');
+        $this->middleware('permission:delete category')->only('destroy');
     }
 
     public function index()
@@ -86,17 +91,16 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, $id)
     {
-        $data = $request->only('name_en', 'description_en','_method');
+        $data = $request->only('name_en', 'description_en', '_method');
 
-        if ($request->has('image')){
+        if ($request->has('image')) {
             // return 'image';
             $response = Http::withToken(Session::get('token'))->attach(
                 'image',
                 file_get_contents($request->image),
                 $request->image->getClientOriginalName()
             )->post($this->url . '/admin/category/' . $id, $data);
-            }
-        else
+        } else
             $response = Http::withToken($this->token)
                 ->post($this->url . '/admin/category/' . $id, $data);
 

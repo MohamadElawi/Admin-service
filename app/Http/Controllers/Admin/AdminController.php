@@ -13,6 +13,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view admins')->only('index');
+        $this->middleware('permission:create admin')->only('create', 'store');
+        $this->middleware('permission:edit admin')->only('update');
+        $this->middleware('permission:change status admin')->only('changeStatus');
+        $this->middleware('permission:delete admin')->only('destroy');
+    }
+
     public function getData()
     {
         $admin = auth()->guard('admin')->id();
@@ -28,7 +37,7 @@ class AdminController extends Controller
         $breadcrumbs = [
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins"]
         ];
-        $roles = Role::where('status','active')->get();
+        $roles = Role::where('status', 'active')->get();
 
         return view('admin.admins.index', [
             'breadcrumbs' => $breadcrumbs,
@@ -42,7 +51,7 @@ class AdminController extends Controller
             ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins", 'link' => 'Admin/admins'], ['name' => 'Create Admin']
         ];
 
-        $roles = Role::where('name', '!=', 'user')->where('status','active')->get();
+        $roles = Role::where('name', '!=', 'user')->where('status', 'active')->get();
         return view('admin.admins.create', compact('breadcrumbs', 'roles'));
     }
 
