@@ -8,5 +8,6 @@
 </head>
 <body>
     <h2>hello {{$user['user_name']}}</h2>
+    <h2>verification code is  {{$user['Vcode']}}</h2>
 </body>
 </html>

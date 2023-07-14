@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Resources\Admin\UserResource;
 use App\Http\Traits\HttpResponse;
 use App\Jobs\BlockedUser;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\Datatables;
 
 class UserController extends Controller
@@ -126,5 +128,10 @@ class UserController extends Controller
         $message = $user->status == 'blocked' ? 'blocked' : 'unblocked';
         dispatch(new BlockedUser($user->toArray(), $message));
         return self::success("user $user->status successfully");
+    }
+
+    public function export(){
+        $time = Carbon::now()->format('m_d_H:i');
+        return Excel::download(new UserExport() , "user_$time.xlsx");
     }
 }

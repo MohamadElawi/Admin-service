@@ -16,7 +16,7 @@ class SendVerificationCodeMail extends Mailable
     public $user;
     public function __construct($user)
     {
-        $this->user =$user ;
+        $this->user = $user ;
     }
 
     public function envelope()

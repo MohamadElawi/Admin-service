@@ -33,12 +33,15 @@ Route::group(['prefix'=>'user'],function(){
 });
 
 
-Route::post('test',function(Request $request){
+Route::get('test',function(Request $request){
+   return  auth('admin')->user();
 
-    $response = Http::attach(
-        'image', file_get_contents($request->image), $request->image->getClientOriginalName()
-    )->post('localhost:8080/api/category',$request->only('name_en','description_en'));
-    return $response->status() ;
+
+
+    // $response = Http::attach(
+    //     'image', file_get_contents($request->image), $request->image->getClientOriginalName()
+    // )->post('localhost:8080/api/category',$request->only('name_en','description_en'));
+    // return $response->status() ;
 });
 
 

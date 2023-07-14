@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -155,5 +158,10 @@ class ProductController extends Controller
             return response()->json('forbidden', 403);
 
         return success('deleted successfully');
+    }
+
+    public function export(){
+        $time = Carbon::now()->format('m_d_H:i');
+        return Excel::download(new ProductExport() , "product_$time.xlsx");
     }
 }

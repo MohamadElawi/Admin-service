@@ -23,6 +23,6 @@ class SendVerificationCode implements ShouldQueue
 
     public function handle()
     {
-            Mail::to($this->user->email)->send(new SendVerificationCodeMail($this->user));
+            Mail::to($this->user['email'])->send(new SendVerificationCodeMail($this->user));
     }
 }

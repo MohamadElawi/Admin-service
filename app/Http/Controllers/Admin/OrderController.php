@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -59,5 +62,11 @@ class OrderController extends Controller
 
         $data = $response->json();
         return view('admin.orders.items', compact('data', 'breadcrumbs'));
+    }
+
+
+    public function export(){
+        $time = Carbon::now()->format('m_d_H:i');
+        return Excel::download(new OrderExport() , "order_$time.xlsx");
     }
 }

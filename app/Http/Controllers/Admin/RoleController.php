@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\RoleExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleResource;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -102,5 +105,10 @@ class RoleController extends Controller
     {
         $role->delete();
         return success('deleted successfully');
+    }
+
+    public function export(){
+        $time = Carbon::now()->format('m_d_H:i');
+        return Excel::download(new RoleExport() , "role_$time.xlsx");
     }
 }

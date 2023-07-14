@@ -172,6 +172,7 @@ $("#sub-edit").click(function () {
 });
 
 
+
 function deleteItem(id) {
     $("#user-id").val(id);
 }
@@ -275,3 +276,13 @@ function showItem(id) {
 }
 
 
+function exportExcel(){
+    $.ajax({
+        type : 'GET',
+        url : "users/export",
+        success:function(){
+            window.location.href = "users/export";
+        }
+   });
+    // $.get("users/export");
+}

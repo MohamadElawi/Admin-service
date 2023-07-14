@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\AdminExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Models\Admin;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -35,7 +38,7 @@ class AdminController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "admins"]
+            ['link' => "/Admin/dashboard", 'name' => "Home"], ['name' => "categories"]
         ];
         $roles = Role::where('status', 'active')->get();
 
@@ -98,5 +101,10 @@ class AdminController extends Controller
     {
         $admin->delete();
         return success('deleted successfully');
+    }
+
+    public function export(){
+        $time = Carbon::now()->format('m_d_H:i');
+        return Excel::download(new AdminExport() , "admin_$time.xlsx");
     }
 }

@@ -18,7 +18,8 @@ class VerifyPhone extends FormRequest
     public function rules()
     {
         return [
-            'phone'=>'required|exists:users,phone',
+            // 'phone'=>'required|exists:users,phone',
+            'email' => 'required|exists:users,email',
             'vcode'=>'required|digits:6'
         ];
     }

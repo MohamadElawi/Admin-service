@@ -17,11 +17,12 @@
 
 
 
-         
+            @can('delete user')
              <a onclick="deleteItem({{ $id }})" class="delete-record" data-toggle="modal"
                  data-target="#delete-modal" style="color: #EE4B2B;">
                  <x-heroicon-o-trash style="width:30px;height:30px;color: #EE4B2B" />
              </a>
+             @endcan
 
 
          <meta name="csrf-token" content="{{ csrf_token() }}">

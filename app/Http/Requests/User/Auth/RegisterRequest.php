@@ -20,7 +20,7 @@ class RegisterRequest extends FormRequest
         return [
             'name'=>'required|string|max:50' ,
             'email'=>'required|email|unique:users,email',
-            'phone' => 'required|numeric|digits:10',
+            'phone' => 'required|numeric|digits:10|unique:users,phone',
             'password'=>'required|min:6|string',
             'address'=>'required',
             'confirm_password'=>'required|same:password',

@@ -30,39 +30,41 @@ class RegisterController extends Controller
             ]);
 
             $user->assignRole('user');
-            dispatch(new SendVerificationCode($user));
+            dispatch(new SendVerificationCode($user->toArray()))->onConnection('database');
             DB::commit();
-            return self::success('Account successfully created');
+            return success('Account successfully created');
         } catch (\Exception $ex) {
             DB::rollBack();
-            return self::failure($ex->getMessage(), 450);
+            return failure($ex->getMessage(), 450);
         }
     }
 
     public function verifyPhoneNumber(VerifyPhone $request)
     {
-        $user = User::where('phone', $request->phone)->first();
+        $user = User::where('email', $request->email)->first();
         if (!$user)
             abort(404);
 
-        if ($user->Vcode == $request->vcode && $user->email_verified_at) {
-            return self::failure('email already verified', 413);
+        if ($user->email_verified_at) {
+            return failure('email already verified', 413);
         } elseif ($user->Vcode == $request->vcode) {
             $user->status = 'active';
             $user->email_verified_at = now();
             $user->save();
-            return self::success('email verified successfully');
+            return success('email verified successfully');
         } else {
-            return self::failure('code is not correct', 414);
+            return failure('code is not correct', 414);
         }
     }
 
     public function resendCode(ResendCode $request)
     {
         $user = User::where('email', $request->email)->first();
+        if($user->email_verified_at)
+            return failure('email already verified', 413);
         $user->Vcode = rand(111111, 999999);
         $user->save();
-        // dispatch(new SendVerificationCode($user));
-        return self::success('resend code done successfully');
+        dispatch(new SendVerificationCode($user->toArray()))->onConnection('database');
+        return success('resend code done successfully');
     }
 }

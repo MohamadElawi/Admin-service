@@ -34,6 +34,10 @@ class Admin extends Authenticatable implements JWTSubject
         return $this->getAllPermissions()->pluck('name');
     }
 
+    public function scopeDifferent($query ,$id){
+        return $query->where('id','!=',$id);
+    }
+
      ###################### jwt method
      public function getJWTIdentifier()
      {
